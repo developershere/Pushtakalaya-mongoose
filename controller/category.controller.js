@@ -27,12 +27,14 @@ export const removeCategory = async (request, response, next) => {
         let category = await Category.findById(request.params.id);
         if (!category)
             return response.status(404).json({ err: "Resource not found", status: false })
-        category.deleteOne({ id: request.body.id }) ? response.status(200).json({ msg: "Categoty Remove Succesfully", status: true }) : response.status(404).json({ err: "Request Resource Not Found", status: false });
+        category.deleteOne({ id: request.params.id }) ? response.status(200).json({ msg: "Categoty Remove Succesfully", status: true }) : response.status(404).json({ err: "Request Resource Not Found", status: false });
     } catch (err) {
         return response.status(500).json({ err: "Internal Server Error", status: false });
     }
 }
 
+
+//check this api
 export const editCategory = async (request, response, next) => {
     try {
         let category = await Category.findById(request.body.id);

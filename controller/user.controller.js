@@ -42,3 +42,11 @@ export const signup = async (request, response, next) => {
         return response.status(200).json({err:"Internal Server Error",status:false});
     } 
  }
+
+ export const allUserList=(request,response,next)=>{
+    User.find().then(result=>{
+       return response.status(200).json({msg:"All User List",user:result,status:true});
+    }).catch(err=>{
+        return response.status(500).json({err:"Internal Server Error",status:false});
+    })
+ }

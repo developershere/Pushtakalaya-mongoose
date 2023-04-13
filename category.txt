@@ -1,0 +1,90 @@
+{  "books":[
+           {
+            "name":"My Preschool Board Book",
+            "author":"Na",
+            "published":"2014-04-08T00:00:00.000Z",
+            "price"   : 300,
+             "language": "Hindi",
+             "Publisher Date": "19 Jun 2022",
+             "edition" : "2015",
+             "photos" : "https://cdn01.sapnaonline.com/product_media/9789385362613/sm_9789385362613_110920211150538.jpg",
+             "description" : "My Preschool Board Book",
+             "userId":"643253959871d8b27cde85eb",
+             "cityId":"6432bbf2914075f23f5e7a37",
+             "pinCode":452003,
+             "categoryId":"6432bbf1914075f23f5e7a33",
+             "publicationDate":"4-03-2003",
+             "status":"true",
+             "permission":"true"
+          
+        },
+           {
+            "name":"THE HOBBIT",
+            "author":" J. R. R. TOLKIEN",
+            "published":"2014-04-08T00:00:00.000Z",
+            "price"   : "562",
+             "language": "English",
+             "Publisher Date": "19 Jun 2022",
+             "edition" : "2020",
+             "photos" : "https://img.bookchor.com/images/cover/580/9780007487288.jpg",
+             "description":"What secrets lurk in a family's past--and how important are they in the here and now? Sudha Murty's new book comprises two novellas that explore two quests by two different men--both for mothers they never knew they had. Venkatesh, a bank manager, stumbles upon his lookalike one fine day. When he probes further, he discovers his father's hidden past, which includes an abandoned wife and child..",
+             "userId":"643254ca8f943ceb1039008b",
+            "cityId":"64329204de9da7421de87c7a",
+             "pinCode":452053,
+             "categoryId":"6432bbf1914075f23f5e7a33",
+             "publicationDate":"4-03-2003",
+             "status":"true",
+             "permission":"true"
+          
+        },
+        {
+            "name":"The father I Never Knew",
+            "author":"Sampada Publications",
+            "published":"2014-04-08T00:00:00.000Z",
+            "price"   : "562",
+             "language": "Hindi",
+             "Publisher Date": "19 Jun 2022",
+             "edition" : "2021",
+             "photos" : "https://cdn01.sapnaonline.com/product_media/9789384197452/sm_9789384197452.jpg",
+             "description":"What secrets lurk in a family's past--and how important are they in the here and now? Sudha Murty's new book comprises two novellas that explore two quests by two different men--both for mothers they never knew they had. Venkatesh, a bank manager, stumbles upon his lookalike one fine day. When he probes further, he discovers his father's hidden past, which includes an abandoned wife and child..",
+              "userId":"643253959871d8b27cde85eb",
+             "cityId":"64329204de9da7421de87c7a",
+             "pinCode":452001,
+             "categoryId":"6432bbf0914075f23f5e7a2f",
+             "publicationDate":"8-07-2013",
+             "status":"true",
+             "permission":"true"
+          
+        },
+         {
+           "name":"Hindi Sulekh Mala",
+            "author":"Sudha Murty",
+            "published":"2014-04-08T00:00:00.000Z",
+            "price"   : "120",
+             "language": "Hindi",
+             "Publisher Date": "19 Jun 2022",
+             "edition" : "2021",
+             "photos" : "https://cdn01.sapnaonline.com/product_media/9789384197452/sm_9789384197452.jpg",
+             "description":"What secrets lurk in a family's past--and how important are they in the here and now? Sudha Murty's new book comprises two novellas that explore two quests by two different men--both for mothers they never knew they had. Venkatesh, a bank manager, stumbles upon his lookalike one fine day. When he probes further, he discovers his father's hidden past, which includes an abandoned wife and child..",
+              "userId":"643253959871d8b27cde85eb",
+             "cityId":"643291f5de9da7421de87c76",
+             "pinCode":4512355,
+             "categoryId":"6432bbef914075f23f5e7a2d",
+             "publicationDate":"8-07-2013",
+             "status":"true",
+             "permission":"true"
+          
+        }
+     ]
+
+}
+
+
+["Madhay Pradesh","Utter Praadesh","Maharashtra","Tamilnadu","Rajasthan","Goa","Bihar","Chattisgarh","Punjab"]  
+
+
+{
+    "category" :["Adventure stories","Classics","Crime","Fairy tales"," fables, and folk tales","Fantasy","Historical fiction","Horror",
+    "Humour and satire","Literary fiction","Mystery",
+    "Poetry","Plays","Romance","Science fiction","Short stories","Short stories","Thrillers","War","Women’s fiction"]
+}

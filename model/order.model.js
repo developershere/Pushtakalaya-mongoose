@@ -1,13 +1,17 @@
 import mongoose from "mongoose";
 
-const order = new mongoose.Schema({
+const orderSchema = new mongoose.Schema({
     cartId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"cart"
     },
     userId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"userId"
+        ref:"user"
+    },
+    sellerId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"user"
     },
     billamount:{
         type:Number,
@@ -43,3 +47,5 @@ const order = new mongoose.Schema({
     ]
 
 })
+
+export const Order = mongoose.model("order",orderSchema)

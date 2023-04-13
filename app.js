@@ -7,6 +7,7 @@ import BookRoute  from "./routes/book.route.js"
 import CategoryRoute from "./routes/category.route.js";
 import AdminRouter from "./routes/admin.route.js"
 import CartRouter from "./routes/cart.route.js"
+import OrderRoute from "./routes/order.route.js"
 import db from "./database/dbconfig.js"
 const app = express();
 
@@ -18,7 +19,8 @@ app.use("/city",cityRouter);
 app.use("/book",BookRoute);
 app.use("/category",CategoryRoute);
 app.use("/admin",AdminRouter)
-app.use("/cart",CartRouter)
+app.use("/cart",CartRouter);
+app.use("/order",OrderRoute)
 
 app.listen(3001,()=>{
     console.log("Server Started");

@@ -58,3 +58,22 @@ export const DonateBookList =(request,response,next)=>{
    })
   
  }
+
+
+ export const searchByAuther = (request,response,next)=>{
+    Book.find({ author : request.body.author}).then(result=>{
+        return response.status(200).json({result : result ,  message : "list" ,status : true}) 
+    }).catch(err=>{
+        console.log(err);
+       return response.status(500).json({message : "Internal server error"});
+   })
+}
+
+export const searchByBookName = (request,response,next)=>{
+    Book.find({ name : request.params.name}).then(result=>{
+        return response.status(200).json({result : result ,  message : "Search By Book Name" ,status : true}) 
+    }).catch(err=>{
+        console.log(err);
+       return response.status(500).json({message : "Internal server error"});
+   })
+}

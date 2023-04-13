@@ -10,7 +10,7 @@ export const addToCart=async(request,response,next)=>{
         let savecart = await cart.save();
         return response.status(200).json({message:"Item Added  SuccesFully In Cart"});
     }else{
-        let savecart=await Cart.create({
+        let savecart = await Cart.create({
           userId:request.body.userId,
            cartItems:[{bookId:request.body.bookId}]
        });
@@ -30,4 +30,17 @@ export const fetchCart =(request,response,next)=>{
       console.log(err);
         return response.status(200).json({msg:"Inernal Server Error",status:false});
     })
+}
+
+
+export const removeBookInCart=async(request,response,next)=>{
+    try {
+      let cart = await Cart.findOne({userId:request.body.userId}).populate("cartItems.bookId");
+      if (!cart)
+          return response.status(404).json({ err: " Request Resource not found", status: false })
+       await cart.deleteOne()?response.status(200).json({ msg: "Remove Book In Cart ", status: true }):response.status(404).json({ err: "Resource not found", status: false });
+     
+  } catch (err) {
+      return response.status(500).json({ err: "Internal Server Error", status: false });
+  }
 }
