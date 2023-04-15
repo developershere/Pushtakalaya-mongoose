@@ -19,13 +19,13 @@ body("categoryId").notEmpty(),
 body("publicationDate").notEmpty(),
 body("published").notEmpty(),addBook);
 
-router.post('/saveAll',saveProduct)
+router.post('/saveAll',saveProduct);
 
-router.get("/list",bookList)
-router.get("/freebooklist",DonateBookList)
+router.get("/list",bookList);
+router.get("/freebooklist",DonateBookList);
 router.get('/delete-book/:id',removeBook);
 router.post('/search',searchByAuther);
-router.get("/searchByBookName/:name",searchByBookName)
+router.get("/searchByBookName/:name",searchByBookName);
 
 
 export default router;

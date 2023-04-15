@@ -3,11 +3,12 @@ import { validationResult } from "express-validator";
 import { User } from "../model/user.model.js"
 import bcrypt from "bcryptjs"
 import { request, response } from "express";
+import jwt from "jsonwebtoken";
 
 
 export const signup = async (request, response, next) => {
     try {
-        const errors = await validationResult(request) ;
+        const errors = await validationResult(request);
         if (!errors.isEmpty())
             return response.status(400).json({ message: "bed request ", masseges: errors.array() })
         request.body.password = await bcrypt.hash(request.body.password, await bcrypt.genSalt(15));
@@ -28,25 +29,29 @@ export const signup = async (request, response, next) => {
 
         return response.status(500).json({ message: "Internal server Error", status: false });
     }
-} 
+}
 
 
- export const signIn=async(request,response,next)=>{
-    try{
-        let user=await  User.findOne({email:request.body.email})
-       let status=user? bcrypt.compare(request.body.password,user.password):response.status(404).json({err:"unauthorized person"});
-       status?response.status(200).json({user:{...user.toObject(),password:undefined},msg:"signIn success",status:true}):response.status(404).json({err:"unauthorized person"})
+export const signIn = async (request, response, next) => {
+    try {
+        let user = await User.findOne({ email: request.body.email })
+        let status = user ? bcrypt.compare(request.body.password, user.password) : response.status(404).json({ err: "unauthorized person" });
+        if(status){
+            let token=jwt.sign({email:user.email},'zxcvbnmasdfghjkl');
+            return response.status(200).json({user:{...user.toObject(),password:undefined},msg:"SignIn Success",status:true,token:token});
+        } 
+        return response.status(404).json({ err: "unauthorized person" })
 
-    }catch(err){
+    } catch (err) {
         console.log(err);
-        return response.status(200).json({err:"Internal Server Error",status:false});
-    } 
- }
+        return response.status(200).json({ err: "Internal Server Error", status: false });
+    }
+}
 
- export const allUserList=(request,response,next)=>{
-    User.find().then(result=>{
-       return response.status(200).json({msg:"All User List",user:result,status:true});
-    }).catch(err=>{
-        return response.status(500).json({err:"Internal Server Error",status:false});
+export const allUserList = (request, response, next) => {
+    User.find().then(result => {
+        return response.status(200).json({ msg: "All User List", user: result, status: true });
+    }).catch(err => {
+        return response.status(500).json({ err: "Internal Server Error", status: false });
     })
- }
+}

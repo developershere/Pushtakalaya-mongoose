@@ -9,6 +9,6 @@ body("contact","contact Must Be Required").notEmpty(),
 body("email","Email Must be Required"),body("email","please Enter correct email"),signup);
 
 router.post("/signIn",signIn)
-router.get("/alluserlist",allUserList)
+router.get("/userList",allUserList)
 
 export default router;

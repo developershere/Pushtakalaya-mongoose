@@ -34,15 +34,11 @@ export const removeCategory = async (request, response, next) => {
 }
 
 
-//check this api
+
 export const editCategory = async (request, response, next) => {
     try {
-        let category = await Category.findById(request.body.id);
-        console.log(category)
-        if (!category)
-            return response.status(404).json({ err: "Resource not found", status: false })
-            category.updateOne({id :request.body.id},{$set : {categoryName : request.body.categoryName}})
-            ? response.status(200).json({ msg: "Categoty Update Succesfully", status: true }) : response.status(404).json({ err: "Request Resource Not Found", status: false });
+       await Category.findOneAndUpdate({_id:request.body.id},{ $set:{  categoryName : request.body.categoryName } },{new:true})?response.status(200).json({msg:"Category Update",status:true}):response.status(404).json({err:"Request Resource Not Found"});
+        
     } catch (err) {
         console.log(err);
         return response.status(500).json({ err: "Internal Server Error", status: false });
