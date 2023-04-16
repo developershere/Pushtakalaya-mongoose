@@ -6,7 +6,8 @@ export const addToCart=async(request,response,next)=>{
     if(cart){
         if(cart.cartItems.some((item)=>item.bookId==request.body.bookId))
           return response.status(200).json({message:"Book Already Exist In Cart"});
-          cart.cartItems.push({bookid:request.body.bookId});
+          cart.cartItems.push({bookId:request.body.bookId});
+        
         let savecart = await cart.save();
         return response.status(200).json({message:"Item Added  SuccesFully In Cart"});
     }else{

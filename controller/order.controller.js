@@ -56,3 +56,12 @@ export const changestatus=async(request,response,next)=>{
     }
 
 }
+
+
+export const viewOrderBySellerId=(request,response,next)=>{
+       Order.find({sellerId:request.body.sellerId}).then((result)=>{
+        return response.status(200).json({result:result,status:true});
+       }).catch((err)=>{
+        return response.status(500).json({msg:"Internal Server Eror",status:false});
+       })
+}
