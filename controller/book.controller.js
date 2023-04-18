@@ -77,3 +77,18 @@ export const searchByBookName = (request,response,next)=>{
        return response.status(500).json({message : "Internal server error"});
    })
 }
+
+export const searchByKeyword =async (request, response,next) => {
+  try {
+    const { searchKeyword } = request.body;
+    const results = await MyModel.find({ description: { $regex: searchKeyword, $options: 'i' } });
+    setTimeout(() => {
+      response.json(results);
+    }, 3000); 
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: 'Server error' });
+  }
+};
+
+

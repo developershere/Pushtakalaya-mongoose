@@ -4,7 +4,11 @@ import { User } from "../model/user.model.js"
 import bcrypt from "bcryptjs"
 import { request, response } from "express";
 import jwt from "jsonwebtoken";
+// import env from '../env.json';
+import nodemailer from 'nodemailer';
+// import env from 'env';
 
+// import env.config();
 
 export const signup = async (request, response, next) => {
     try {
@@ -55,3 +59,27 @@ export const allUserList = (request, response, next) => {
         return response.status(500).json({ err: "Internal Server Error", status: false });
     })
 }
+
+export const forgotPassword = async (request,response,next)=>{
+  try {
+    const { email } = request.body;
+    const user = await User.findOne({ email });
+    console.log(email);
+    console.log(user);
+    if (!user) {
+      return response.status(404).json({ message: 'User not found' });
+    }
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + 3600000; 
+    await user.save();
+    response.json({ message: 'Password reset email sent' });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+
+

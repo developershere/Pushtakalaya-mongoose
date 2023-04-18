@@ -20,7 +20,8 @@ app.use("/book",BookRoute);
 app.use("/category",CategoryRoute);
 app.use("/admin",AdminRouter)
 app.use("/cart",CartRouter);
-app.use("/order",OrderRoute)
+app.use("/order",OrderRoute);
+
 
 app.listen(3001,()=>{
     console.log("Server Started");
