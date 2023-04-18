@@ -1,6 +1,6 @@
 import express from "express";
 import{body }from "express-validator";
-import{addBook,saveProduct,removeBook, bookList,DonateBookList, searchByAuther,searchByBookName}from "../controller/book.controller.js"
+import{addBook,saveProduct,removeBook, bookList,DonateBookList, searchByAuther,searchByBookName,viewByUserId}from "../controller/book.controller.js"
 
 const router=express.Router(); 
 router.post("/add",body("name","Book Name Required").notEmpty(),
@@ -26,6 +26,7 @@ router.get("/freebooklist",DonateBookList);
 router.get('/delete-book/:id',removeBook);
 router.post('/search',searchByAuther);
 router.get("/searchByBookName/:name",searchByBookName);
+router.post("/byuserId",viewByUserId)
 
 
 export default router;

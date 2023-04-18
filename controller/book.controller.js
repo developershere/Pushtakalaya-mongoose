@@ -77,3 +77,13 @@ export const searchByBookName = (request,response,next)=>{
        return response.status(500).json({message : "Internal server error"});
    })
 }
+
+
+export const viewByUserId=(request,response,next)=>{
+    Book.find({userId:request.body.userId
+    }).then((result)=>{
+        return response.status(200).json({book:result,status:true});
+    }).catch((err)=>{
+        return response.status(500).json({msg:"Internal Server Error",status:false});
+    })
+}

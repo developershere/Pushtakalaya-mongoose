@@ -9,10 +9,12 @@ import AdminRouter from "./routes/admin.route.js"
 import CartRouter from "./routes/cart.route.js"
 import OrderRoute from "./routes/order.route.js"
 import db from "./database/dbconfig.js"
+import cors from "cors";
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(cors());
 app.use("/user",userRoute);
 app.use("/state",stateRouter);
 app.use("/city",cityRouter);
