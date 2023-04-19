@@ -17,7 +17,7 @@ export const saveProduct = async (request, response, next) => {
     }
 }
 
-export const addBook=async(request,response,next)=>{
+export const addBook= async(request,response,next)=>{
     try{
     let error = await validationResult(request.body);
     if (!error.isEmpty())
@@ -47,7 +47,6 @@ export const bookList =(request,response,next)=>{
   }).catch(err=>{
     return response.status(500).json({ Message: "Internal server error...", status: false });
   })
- 
 }
 
 export const DonateBookList =(request,response,next)=>{
@@ -90,5 +89,4 @@ export const searchByKeyword =async (request, response,next) => {
     response.status(500).json({ message: 'Server error' });
   }
 };
-
-
+ 
