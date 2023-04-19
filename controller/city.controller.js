@@ -18,3 +18,37 @@ export const findCityByState = async(request, response, next) => {
         response.status(500).send('Server error');
     }
 };
+
+export const addSingleCity = async (request, response,next) => {
+    const name = request.body;
+    try {
+      const city = await City.findOne(name);
+      if (city) {
+        return response.status(400).json({ message: 'City already exists',status: false});
+      }
+      const newCity = new City( name) ;
+      await newCity.save();
+      return response.status(200).json({Message: "City Saved success...",status:true});
+    } catch (error) {
+      console.error(error);
+      response.status(500).json({ message: 'Server Error',status: false });
+    }
+  }
+
+
+export const deleteCity = async (request , response) => {
+  const id = req.params.id;
+  try {
+    const result = await City.deleteOne({ _id: id });
+
+    if (result.deletedCount === 1) {
+      response.status(204).json({Message: "State Deleted Seccessfully...",status: true});
+    } else {
+      response.status(404).send({ message: 'State not found' ,status: false});
+    }
+  } catch (error) {
+    console.error(error);
+    response.status(500).send();
+  }
+};
+
