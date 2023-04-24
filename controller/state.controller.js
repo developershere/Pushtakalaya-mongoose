@@ -12,3 +12,12 @@ export const addState=(request,response,next)=>{
 }
 
 }
+
+export const list = (request, response, next) => {
+    State.find().then(result => {
+        return response.status(200).json({ state: result, msg: "State List", status: true });
+    }).catch(err => {
+        return response.status(500).json({ err: "Internal Server Error", status: false })
+    })
+}
+

@@ -12,9 +12,10 @@ import db from "./database/dbconfig.js"
 import cors from "cors";
 const app = express();
 
-app.use(bodyParser.json());
+app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors());
+
 app.use("/user",userRoute);
 app.use("/state",stateRouter);
 app.use("/city",cityRouter);
@@ -24,6 +25,6 @@ app.use("/admin",AdminRouter)
 app.use("/cart",CartRouter);
 app.use("/order",OrderRoute)
 
-app.listen(3001,()=>{
+app.listen(3002,()=>{
     console.log("Server Started");
 })
