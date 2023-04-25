@@ -1,7 +1,8 @@
 import express from "express";
+import multer from "multer";
 import{body }from "express-validator";
-import{addBook,saveProduct,removeBook, bookList,DonateBookList, searchByAuther,searchByBookName,viewByUserId,searchByKeyWord,updateBook}from "../controller/book.controller.js"
-
+import{addBook,saveProduct,removeBook, bookList,DonateBookList, searchByAuther,searchByBookName,viewByUserId,searchByKeyWord,updateBook,addBooks, TopBooks}from "../controller/book.controller.js"
+var upload = multer({dest:"public/images"});
 const router=express.Router(); 
 router.post("/add",body("name","Book Name Required").notEmpty(),
 body("author").notEmpty(),
@@ -17,10 +18,10 @@ body("status").notEmpty(),
 body("permission").notEmpty(),
 body("categoryId").notEmpty(),
 body("publicationDate").notEmpty(),
-body("published").notEmpty(),addBook);
-
+body("published").notEmpty(),upload.single("image"),addBook);
+router.get("/topBooks",TopBooks)
 router.post('/saveAll',saveProduct);
-
+router.get('/addBook',addBooks);
 router.get("/list",bookList);
 router.get("/freeBookList",DonateBookList);
 router.get('/deleteBook/:id',removeBook);

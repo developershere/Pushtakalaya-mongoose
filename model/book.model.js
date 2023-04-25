@@ -36,7 +36,7 @@ const bookSchema =new mongoose.Schema({
         required:true,
     },
     publicationDate: {
-        type:Date,
+        type:String,
         required:true,
     },
     userId: {
@@ -56,7 +56,7 @@ const bookSchema =new mongoose.Schema({
         type: Boolean,
         required:true
     },
-    pinCode: {
+    pincode: {
         type:Number,
         required:true
     },

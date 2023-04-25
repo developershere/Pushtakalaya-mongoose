@@ -4,11 +4,8 @@ import { validationResult } from "express-validator";
 
 export const saveProduct = async (request, response, next) => {
     try {
-        for (let book of request.body.books) {
-            let { name, author, published, price, language, edition, photos, description, userId, cityId, pinCode, categoryId, publicationDate, status, permission } = book;
-               await Book.create({
-                name: name, author: author, published: published, price: price, language: language, edition: edition, photos: photos, description: description, userId: userId, cityId: cityId, pinCode: pinCode, categoryId: categoryId, publicationDate: publicationDate, status: status, permission: permission
-            });
+        for (let book of request.body) {
+            await Book.create(book);
         }
         return response.status(200).json({ msg: "Add products Succesfully", status: true })
     } catch (err) {
@@ -17,6 +14,13 @@ export const saveProduct = async (request, response, next) => {
     }
 }
 
+export const TopBooks =(request,response,next)=>{
+    Book.find().limit(10).then(result=>{
+     return response.status(200).json({topbookList:result,status:true});
+   }).catch(err=>{
+     return response.status(500).json({ Message: "Internal server error...", status: false });
+   })
+}
 export const addBook=async(request,response,next)=>{
     try{
     let error = await validationResult(request.body);
@@ -124,4 +128,8 @@ catch(err){
   console.log(err);
  return response.status(500).json({error : "Internal server error"});
 }
+}
+
+export const addBooks = (request,response,next)=>{
+        response.render("book.ejs");
 }
