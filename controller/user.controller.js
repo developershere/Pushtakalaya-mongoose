@@ -4,7 +4,7 @@ import { User } from "../model/user.model.js"
 import bcrypt from "bcryptjs"
 import { request, response } from "express";
 import jwt from "jsonwebtoken";
-
+import mail from '../service/email.js'
 
 export const signup = async (request, response, next) => {
     try {
@@ -14,9 +14,10 @@ export const signup = async (request, response, next) => {
         request.body.password = await bcrypt.hash(request.body.password, await bcrypt.genSalt(15));
 
         let x = Math.floor((Math.random() * 9999) + 1000);
+        let email=mail(request.body.email,"Registration Verification ",request.body.name,x)
         var time = new Date().getMinutes();
         if (new Date().getMinutes() <= time + 5) {
-            if (request.body.otp == 470115) {
+            if (request.body.otp == x) {
                 const user = await User.create(request.body);
                 return response.status(200).json({ user: user, status: true });
             }

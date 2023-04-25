@@ -9,3 +9,11 @@ export const addCity =(request,response,next)=>{
         return response.status(500).json({msg:"Internal Server Error",status:false});
     })
 }
+
+export const cityList = (request,response,next)=>{
+    City.find().then(result=>{
+        return response.status(200).json({ result : result , msg: "City Added SuccesFully", status: true });
+    }).catch(err=>{
+        return response.status(500).json({ msg: "Internal Server Error", status: false });
+     })
+}

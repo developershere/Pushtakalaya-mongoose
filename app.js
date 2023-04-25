@@ -8,9 +8,12 @@ import CategoryRoute from "./routes/category.route.js";
 import AdminRouter from "./routes/admin.route.js"
 import CartRouter from "./routes/cart.route.js"
 import OrderRoute from "./routes/order.route.js"
-import db from "./database/dbconfig.js"
-const app = express();
 
+import env from "dotenv"
+import mongoose from "mongoose";
+const app = express();
+env.config();
+mongoose.connect(process.env.MONGO_URL).then(()=>console.log("DataBase Connect")).catch((err)=>console.log("DataBase Not Connected"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use("/user",userRoute);
@@ -22,6 +25,6 @@ app.use("/admin",AdminRouter)
 app.use("/cart",CartRouter);
 app.use("/order",OrderRoute)
 
-app.listen(3001,()=>{
+app.listen(process.env.PORT,()=>{
     console.log("Server Started");
 })
