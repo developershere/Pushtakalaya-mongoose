@@ -4,7 +4,21 @@ import { User } from "../model/user.model.js"
 import bcrypt from "bcryptjs"
 import { request, response } from "express";
 import jwt from "jsonwebtoken";
-
+import mail from '../services/email.js'
+export const verifyEmail = async (request,response,next)=>{
+    try{
+        console.log("Beckend called...");
+    let x = Math.floor((Math.random() * 9999) + 1000);
+    var time = new Date().getMinutes();
+    let status = await mail(request.body.email,"Email Verification from Pustakalaya",request.body.name,x);
+    status?response.status(200).json({result : {currentTime : time,OTP : x},status : true}): response.status(500).json({Message : "Internal Server Error...",status : false});
+    }
+    catch(err)
+    {
+        console.log(err);
+        return response.status(500).json({Message : "Internal Server Error...",status : false});
+    }
+}
 
 export const signup = async (request, response, next) => {
     try {
@@ -13,8 +27,7 @@ export const signup = async (request, response, next) => {
             return response.status(400).json({ message: "bed request ", masseges: errors.array() })
         request.body.password = await bcrypt.hash(request.body.password, await bcrypt.genSalt(15));
 
-        let x = Math.floor((Math.random() * 9999) + 1000);
-        var time = new Date().getMinutes();
+        
         if (new Date().getMinutes() <= time + 5) {                                     
             if (request.body.otp == 470115) {
                 const user = await User.create(request.body);

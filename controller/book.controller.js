@@ -15,7 +15,7 @@ export const saveProduct = async (request, response, next) => {
 }
 
 export const TopBooks =(request,response,next)=>{
-    Book.find().limit(10).then(result=>{
+    Book.find().then(result=>{
      return response.status(200).json({topbookList:result,status:true});
    }).catch(err=>{
      return response.status(500).json({ Message: "Internal server error...", status: false });

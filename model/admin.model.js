@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import uniqueValidator from 'mongoose-unique-validator';
 const AdminSchema =new mongoose.Schema({
     name: {
         type: String,
@@ -6,18 +7,20 @@ const AdminSchema =new mongoose.Schema({
     },
     email: {
         type: String,
-       required:true,
+        required:true,
         trim:true,
+        unique : true
     },
     password: {
         type: String,
-        required:true
+        required:true,
+        unique : true
     },
     contact: {
         type: String,
-       required:true
+        required:true
     },
 
 });
-
+AdminSchema.plugin(uniqueValidator);
 export const Admin=mongoose.model("admin",AdminSchema);
