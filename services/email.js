@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 function email(email,subject,name,otp){
-    console.log("Inside email function...");
+    let flag = false;
     var transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       service: 'gmail',
@@ -11,7 +11,6 @@ function email(email,subject,name,otp){
         pass: 'hsdvaqracixzpuhv'
       }
     });
-  console.log("Mausam");
     var mailOptions = {
       from: 'mausamlodhi326@gmail.com@gmail.com',
       to: email,
@@ -20,8 +19,8 @@ function email(email,subject,name,otp){
     };
   
     transporter.sendMail(mailOptions, function (error, info){
-        error ? console.log(error):response.send("Email has been sent to the user")
+        error ? flag = false : flag = true;
     });
-    return true;
+    return flag;
 }
 export default email;

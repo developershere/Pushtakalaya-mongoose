@@ -12,6 +12,6 @@ router.post("/signIn",signIn)
 router.get("/userList",allUserList)
 router.post("/viewprofile" , userProfile );
 router.put("/updateProfile",updateProfile);
-router.post("/verifyEmail",verifyEmail);
+router.post("/mausam",verifyEmail);
 
 export default router;
