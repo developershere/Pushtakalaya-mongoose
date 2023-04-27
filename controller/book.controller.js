@@ -68,6 +68,7 @@ export const DonateBookList =(request,response,next)=>{
 
 
  export const searchByAuther = (request,response,next)=>{
+    console.log("xcvbn");
     Book.find({ author : request.body.author}).then(result=>{
         return response.status(200).json({result : result ,  message : "list" ,status : true}) 
     }).catch(err=>{
@@ -87,8 +88,8 @@ export const searchByBookName = (request,response,next)=>{
 
 
 export const searchByCategoryId =(request,response,next)=>{
-   
-    Book.find({categoryId:request.body.categoryId}).then(result=>{
+ 
+    Book.find({categoryId:request.body.id}).then(result=>{
        return response.status(200).json({result:result,status:true})
     }).catch(err=>{
         return response.status(500).json({msg:"Internal Server Error"});
@@ -140,3 +141,5 @@ catch(err){
  return response.status(500).json({error : "Internal server error"});
 }
 }
+
+

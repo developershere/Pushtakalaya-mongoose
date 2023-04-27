@@ -74,17 +74,7 @@ export const userProfile = async (request,response,next)=>{
        }
    }
 
-export const updateProfile = async (request,response,next)=>{
-  console.log(request.body);
-  try{
-   let update = await User.updateOne({_id : request.body.id } ,{email : request.body.email, name : request.body.name, contact : request.body.contact})
-   return response.status(200).json({message : "profile update" , result : update,status:true});
-     
-  }
-  catch(err){
-   return response.staus(500).json({error : "Internal server error"});
-}  
-}
+
 
 export const updateProfile = async (req,response,next)=>{
     

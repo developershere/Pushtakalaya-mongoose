@@ -3,6 +3,6 @@ import {addCategory,editCategory,list,removeCategory}from "../controller/categor
 const router = express.Router();
 router.post("/addCategory",addCategory);
 router.get("/list",list);
-router.get("/remove/:id",removeCategory);
+router.post("/remove",removeCategory);
 router.put("/edit",editCategory )
 export default router;

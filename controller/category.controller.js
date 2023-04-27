@@ -25,10 +25,10 @@ export const list = (request, response, next) => {
 
 export const removeCategory = async (request, response, next) => {
     try {
-        let category = await Category.findById(request.params.id);
+        let category = await Category.findById(request.body.categoryId);
         if (!category)
             return response.status(404).json({ err: "Resource not found", status: false })
-        category.deleteOne({ id: request.params.id }) ? response.status(200).json({ msg: "Categoty Remove Succesfully", status: true }) : response.status(404).json({ err: "Request Resource Not Found", status: false });
+      let result = category.deleteOne({ id: request.body.categoryId }) ?response.status(200).json({category:result, msg: "Categoty Remove Succesfully", status: true }) : response.status(404).json({ err: "Request Resource Not Found", status: false });
     } catch (err) {
         return response.status(500).json({ err: "Internal Server Error", status: false });
     }
