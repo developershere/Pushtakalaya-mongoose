@@ -11,9 +11,13 @@ import OrderRoute from "./routes/order.route.js"
 
 import env from "dotenv"
 import mongoose from "mongoose";
+
+import cors from "cors"
+
 const app = express();
 env.config();
-mongoose.connect(process.env.MONGO_URL).then(()=>console.log("DataBase Connect")).catch((err)=>console.log("DataBase Not Connected"));
+mongoose.connect(process.env.MONGO_URL).then(()=>console.log("DataBase Connect")).catch((err)=>console.log("database not connected"));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use("/user",userRoute);

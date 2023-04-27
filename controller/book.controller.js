@@ -38,7 +38,9 @@ export const removeBook=async(request,response,next)=>{
 }
 
 export const bookList =(request,response,next)=>{
-   Book.find().then(result=>{
+    let page = parseInt(request.query.page) || 1;
+    let perPage = 10;
+   Book.find().skip((page-1)*10).limit(10).then(result=>{
     return response.status(200).json({bookList:result,status:true});
   }).catch(err=>{
     return response.status(500).json({ Message: "Internal server error...", status: false });
@@ -47,7 +49,7 @@ export const bookList =(request,response,next)=>{
 }
 
 export const TopBooks =(request,response,next)=>{
-    Book.find().limit(10).then(result=>{
+    Book.find().limit(12).then(result=>{
      return response.status(200).json({topbookList:result,status:true});
    }).catch(err=>{
      return response.status(500).json({ Message: "Internal server error...", status: false });
@@ -81,4 +83,14 @@ export const searchByBookName = (request,response,next)=>{
         console.log(err);
        return response.status(500).json({message : "Internal server error"});
    })
+}
+
+
+export const searchByCategoryId =(request,response,next)=>{
+   
+    Book.find({categoryId:request.body.categoryId}).then(result=>{
+       return response.status(200).json({result:result,status:true})
+    }).catch(err=>{
+        return response.status(500).json({msg:"Internal Server Error"});
+    })
 }

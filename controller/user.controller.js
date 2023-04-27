@@ -35,10 +35,13 @@ export const signup = async (request, response, next) => {
 
 export const signIn = async (request, response, next) => {
     try {
+  
         let user = await User.findOne({ email: request.body.email })
-        let status = user ? bcrypt.compare(request.body.password, user.password) : response.status(404).json({ err: "unauthorized person" });
+       
+        let status =user ?await bcrypt.compare(request.body.password, user.password) : response.status(404).json({ err: "unauthorized person" });
         if(status){
-            let token=jwt.sign({email:user.email},'zxcvbnmasdfghjkl');
+            let payload = {subject: user.email};
+            let token=jwt.sign(payload,'zxcvbnmasdfghjkl');
             return response.status(200).json({user:{...user.toObject(),password:undefined},msg:"SignIn Success",status:true,token:token});
         } 
         return response.status(404).json({ err: "unauthorized person" })
@@ -49,6 +52,8 @@ export const signIn = async (request, response, next) => {
     }
 }
 
+
+
 export const allUserList = (request, response, next) => {
     User.find().then(result => {
         return response.status(200).json({ msg: "All User List", user: result, status: true });
@@ -56,3 +61,23 @@ export const allUserList = (request, response, next) => {
         return response.status(500).json({ err: "Internal Server Error", status: false });
     })
 }
+
+export const updateProfile = async (req,response,next)=>{
+    
+   
+    try{
+    const user = await User.findById(req.body._id);
+    if (user) {
+        user.name = req.body.name || user.name;
+        user.email = req.body.email || user.email;
+        user.photo = req.body.photo || user.photo;
+       
+        const updatedUser = await user.save();
+        return response.status(200).json({updatedUser:updatedUser,staus:true});
+    }
+}
+    catch(err){
+        console.log(err);
+     return response.status(500).json({error : "Internal server error"});
+    }
+ }
