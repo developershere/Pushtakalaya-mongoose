@@ -21,7 +21,7 @@ export const TopBooks =(request,response,next)=>{
      return response.status(500).json({ Message: "Internal server error...", status: false });
    })
 }
-export const addBook=async(request,response,next)=>{
+export const addBook= async(request,response,next)=>{
     try{
     let error = await validationResult(request.body);
     if (!error.isEmpty())
@@ -51,7 +51,6 @@ export const bookList =(request,response,next)=>{
   }).catch(err=>{
     return response.status(500).json({ Message: "Internal server error...", status: false });
   })
- 
 }
 
 export const DonateBookList =(request,response,next)=>{
@@ -93,7 +92,7 @@ export const viewByUserId=(request,response,next)=>{
 }
 
 
-export const searchByKeyWord = async (request,response,next)=>{
+export const searchByKeyword = async (request,response,next)=>{
     try {
          let searchResult = await  Book.find({
              $or: [{ name: { $regex: request.params.keyword, $options: "i" } },

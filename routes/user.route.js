@@ -1,6 +1,6 @@
 import express from "express";
 import{body }from "express-validator";
-import { signup ,signIn,allUserList,userProfile,updateProfile, verifyEmail} from "../controller/user.controller.js";
+import { signup ,signIn,allUserList,userProfile,forgotPassword,updateProfile, verifyEmail} from "../controller/user.controller.js";
 const router=express.Router();
 
 router.post("/signup",body("name","Name Must Be Required").notEmpty(),
@@ -13,5 +13,6 @@ router.get("/userList",allUserList)
 router.post("/viewprofile" , userProfile );
 router.put("/updateProfile",updateProfile);
 router.post("/mausam",verifyEmail);
+router.post('/forgot-password',forgotPassword);
 
 export default router;
