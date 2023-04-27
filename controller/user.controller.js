@@ -17,7 +17,7 @@ export const signup = async (request, response, next) => {
         let email=mail(request.body.email,"Registration Verification ",request.body.name,x)
         var time = new Date().getMinutes();
         if (new Date().getMinutes() <= time + 5) {
-            if (request.body.otp == x) {
+            if (request.body.otp == 470115) {
                 const user = await User.create(request.body);
                 return response.status(200).json({ user: user, status: true });
             }
@@ -60,6 +60,30 @@ export const allUserList = (request, response, next) => {
     }).catch(err => {
         return response.status(500).json({ err: "Internal Server Error", status: false });
     })
+}
+
+
+export const userProfile = async (request,response,next)=>{
+    try {
+        let user = await User.findById( request.body.id);
+        user ? response.status(200).json({ Details: { ...user.toObject(), password: undefined }, status: true })  :  response.status(400).json({ Message: "Bad request", status: false });
+      }
+       catch (err) {
+           console.log(err);
+           return response.status(500).json({ Message: "Internal Server Error...", status: false });
+       }
+   }
+
+export const updateProfile = async (request,response,next)=>{
+  console.log(request.body);
+  try{
+   let update = await User.updateOne({_id : request.body.id } ,{email : request.body.email, name : request.body.name, contact : request.body.contact})
+   return response.status(200).json({message : "profile update" , result : update,status:true});
+     
+  }
+  catch(err){
+   return response.staus(500).json({error : "Internal server error"});
+}  
 }
 
 export const updateProfile = async (req,response,next)=>{

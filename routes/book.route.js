@@ -22,11 +22,14 @@ body("published").notEmpty(),addBook);
 router.post('/saveAll',saveProduct);
 router.get("/topBooks",TopBooks)
 router.get("/list",bookList);
-router.get("/freebooklist",DonateBookList);
-router.get('/delete-book/:id',removeBook);
+router.get("/freeBookList",DonateBookList);
+router.get('/deleteBook/:id',removeBook);
 router.post('/search',searchByAuther);
 router.post('/searchByCategoryId',searchByCategoryId)
 router.get("/searchByBookName/:name",searchByBookName);
+router.post("/byuserId",viewByUserId);
+router.get("/searchByKeyWord/:keyword", searchByKeyWord)
+router.post("/update-book",updateBook)
 
 
 export default router;
