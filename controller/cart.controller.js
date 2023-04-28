@@ -2,6 +2,7 @@ import { request, response } from "express";
 import {Cart}from "../model/cart.model.js"
 export const addToCart=async(request,response,next)=>{
   try{
+    console.log("addToCart called...");
     let cart = await Cart.findOne({userId:request.body.userId});
     if(cart){
         if(cart.cartItems.some((item)=>item.bookId==request.body.bookId))
@@ -36,8 +37,10 @@ export const fetchCart =(request,response,next)=>{
 
 export const removeBookInCart=async(request,response,next)=>{
     try {
-      let cart = await Cart.findOne({userId:request.body.userId}).populate("cartItems.bookId");
+      let cart = await Cart.find({userId:request.body.userId}).populate("cartItems.bookId");
+      console.log(cart);
       if (!cart)
+          
           return response.status(404).json({ err: " Request Resource not found", status: false })
        await cart.deleteOne()?response.status(200).json({ msg: "Remove Book In Cart ", status: true }):response.status(404).json({ err: "Resource not found", status: false });
      

@@ -6,6 +6,16 @@ export const addCity = (request, response, next) => {
     }).catch(err => {
         console.log(err);
         return response.status(500).json({ msg: "Internal Server Error", status: false });
+
+    })
+}
+
+export const cityList = (request, response, next) => {
+    City.find().then(result => {
+        return response.status(200).json({ state: result, msg: "State List", status: true });
+    }).catch(err => {
+        return response.status(500).json({ err: "Internal Server Error", status: false })
+
     })
 }
 export const findCityByState = async(request, response, next) => {

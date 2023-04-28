@@ -3,7 +3,11 @@ import { addState,stateList,addSingleState,deleteState } from "../controller/sta
 
 const router = express.Router();
 router.post("/add-state", addState);
+
+router.get("/findState",stateList);
+
 router.get("/stateList",stateList);
+
 router.post("/addSingleState",addSingleState);
 router.get("/deleteState/:id",deleteState);
 

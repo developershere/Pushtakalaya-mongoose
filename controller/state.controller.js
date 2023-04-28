@@ -17,6 +17,9 @@ export const addState = (request, response, next) => {
 }
 
 export const stateList = (request, response, next) => {
+  console.log("State List called...");
+    State.find().then(result => {
+        return response.status(200).json({ stateList: result, status: true });
     State.find().then(result => {
         return response.status(200).json({ StareList: result, status: true });
     }).catch(err => {

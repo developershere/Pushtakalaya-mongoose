@@ -4,17 +4,22 @@ import { validationResult } from "express-validator";
 
 export const saveProduct = async (request, response, next) => {
     try {
-        for (let book of request.body.books) {
-            let { name, author, published, price, language, edition, photos, description, userId, cityId, pinCode, categoryId, publicationDate, status, permission } = book;
-               await Book.create({
-                name: name, author: author, published: published, price: price, language: language, edition: edition, photos: photos, description: description, userId: userId, cityId: cityId, pinCode: pinCode, categoryId: categoryId, publicationDate: publicationDate, status: status, permission: permission
-            });
+        for (let book of request.body) {
+            await Book.create(book);
         }
         return response.status(200).json({ msg: "Add products Succesfully", status: true })
     } catch (err) {
         console.log(err);
         return response.status(500).json({ msg: "Internal Server Error", status: false });
     }
+}
+export const TopBooks =(request,response,next)=>{
+    console.log("Top books called...");
+    Book.find().limit(10).then(result=>{
+     return response.status(200).json({topbookList:result,status:true});
+   }).catch(err=>{
+     return response.status(500).json({ Message: "Internal server error...", status: false });
+   })
 }
 
 export const addBook= async(request,response,next)=>{
@@ -42,6 +47,7 @@ export const removeBook=async(request,response,next)=>{
 }
 
 export const bookList =(request,response,next)=>{
+    console.log("Book list called...");
    Book.find().then(result=>{
     return response.status(200).json({bookList:result,status:true});
   }).catch(err=>{
@@ -57,7 +63,17 @@ export const DonateBookList =(request,response,next)=>{
    })
   
  }
-
+export const searchByCategoryId = async (request,response,next)=>{
+    try{
+        console.log("Search Book by Category called")
+        let status = await Book.find({categoryId : request.body.id});
+        status ? response.status(200).json({result:status,status:true}): response.status(400).json({Message:"Bed Request...",status : false});
+    }catch(err)
+    {
+        console.log(err);
+        return response.status(500).json({Message : "Internal Server Error",status:false});
+    } 
+}
 
  export const searchByAuther = (request,response,next)=>{
     Book.find({ author : request.body.author}).then(result=>{
@@ -77,6 +93,56 @@ export const searchByBookName = (request,response,next)=>{
    })
 }
 
+export const viewByUserId=(request,response,next)=>{
+    Book.find({userId:request.body.userId
+    }).then((result)=>{
+        return response.status(200).json({book:result,status:true});
+    }).catch((err)=>{
+        return response.status(500).json({msg:"Internal Server Error",status:false});
+    })
+}
+
+
+export const searchByKeyword = async (request,response,next)=>{
+    try {
+         let searchResult = await  Book.find({
+             $or: [{ name: { $regex: request.params.keyword, $options: "i" } },
+              { description: { $regex: request.params.keyword, $options: "i" } },
+                 { author: { $regex: request.params.keyword, $options: "i" } }
+             ]
+         })
+         if (searchResult.length > 0)
+             return response.status(200).json({ Product: searchResult, status: true })
+         else
+             return response.status(401).json({ result: "NO result found", status: false })
+     }
+     catch (err) {
+         console.log(err)
+         return response.status(500).json({ error: err, status: false })
+     }
+ }
+
+export const updateBook = async  (request,response,next)=>{
+   console.log(request.body)
+try{
+   let user = await Book.find({userId : request.body.userId})
+ if(!user)
+  return response.status(404).json({error : "bed request" ,status : false})
+   let updateBook = await Book.updateOne({ _id: request.body.id }, {
+       name: request.body.name, price: request.body.price, author: request.body.author, pinCode: request.body.pinCode, description: request.body.description, photos: request.body.photos
+  })
+   console.log(updateBook)
+  return response.status(200).json({message : "book update succesfully"})
+ }
+catch(err){
+  console.log(err);
+ return response.status(500).json({error : "Internal server error"});
+}
+}
+
+export const addBooks = (request,response,next)=>{
+        response.render("book.ejs");
+}
 export const searchByKeyword =async (request, response,next) => {
   try {
     const { searchKeyword } = request.body;
@@ -89,4 +155,4 @@ export const searchByKeyword =async (request, response,next) => {
     response.status(500).json({ message: 'Server error' });
   }
 };
- 
+
