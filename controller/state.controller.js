@@ -20,6 +20,8 @@ export const stateList = (request, response, next) => {
   console.log("State List called...");
     State.find().then(result => {
         return response.status(200).json({ stateList: result, status: true });
+    State.find().then(result => {
+        return response.status(200).json({ StareList: result, status: true });
     }).catch(err => {
         return response.status(500).json({ Message: "Internal server error...", status: false });
     })

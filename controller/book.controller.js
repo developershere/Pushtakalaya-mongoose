@@ -13,7 +13,6 @@ export const saveProduct = async (request, response, next) => {
         return response.status(500).json({ msg: "Internal Server Error", status: false });
     }
 }
-
 export const TopBooks =(request,response,next)=>{
     console.log("Top books called...");
     Book.find().limit(10).then(result=>{
@@ -22,6 +21,7 @@ export const TopBooks =(request,response,next)=>{
      return response.status(500).json({ Message: "Internal server error...", status: false });
    })
 }
+
 export const addBook= async(request,response,next)=>{
     try{
     let error = await validationResult(request.body);
@@ -93,7 +93,6 @@ export const searchByBookName = (request,response,next)=>{
    })
 }
 
-
 export const viewByUserId=(request,response,next)=>{
     Book.find({userId:request.body.userId
     }).then((result)=>{
@@ -144,3 +143,16 @@ catch(err){
 export const addBooks = (request,response,next)=>{
         response.render("book.ejs");
 }
+export const searchByKeyword =async (request, response,next) => {
+  try {
+    const { searchKeyword } = request.body;
+    const results = await MyModel.find({ description: { $regex: searchKeyword, $options: 'i' } });
+    setTimeout(() => {
+      response.json(results);
+    }, 3000); 
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: 'Server error' });
+  }
+};
+
