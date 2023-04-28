@@ -50,12 +50,17 @@ export const signup = async (request, response, next) => {
 
 
 export const signIn = async (request, response, next) => {
+    console.log("Sign In called...");
+    console.log(request.body.email);
+    console.log(request.body.password);
+
     try {
         let user = await User.findOne({ email: request.body.email })
-        let status = user ? bcrypt.compare(request.body.password, user.password) : response.status(404).json({ err: "unauthorized person" });
+        let status = user ? await bcrypt.compare(request.body.password,user.password): false;
+        console.log(status);
         if (status) {
-            let token = jwt.sign({ email: user.email }, 'zxcvbnmasdfghjkl');
-            return response.status(200).json({ user: { ...user.toObject(), password: undefined }, msg: "SignIn Success", status: true, token: token });
+            let token = jwt.sign({ email: user?.email }, 'zxcvbnmasdfghjkl');
+            return response.status(200).json({ user: { ...user.toObject(), password: undefined,token : token }, msg: "SignIn Success", status: true,});
         }
         return response.status(404).json({ err: "unauthorized person" })
 

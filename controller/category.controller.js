@@ -15,6 +15,7 @@ export const addCategory = async (request, response, next) => {
 
 
 export const list = (request, response, next) => {
+    console.log("Category list called...");
     Category.find().then(result => {
         return response.status(200).json({ category: result, msg: "category List", status: true });
     }).catch(err => {

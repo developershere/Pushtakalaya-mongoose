@@ -2,6 +2,7 @@ import { request, response } from "express";
 import {Cart}from "../model/cart.model.js"
 export const addToCart=async(request,response,next)=>{
   try{
+    console.log("addToCart called...");
     let cart = await Cart.findOne({userId:request.body.userId});
     if(cart){
         if(cart.cartItems.some((item)=>item.bookId==request.body.bookId))

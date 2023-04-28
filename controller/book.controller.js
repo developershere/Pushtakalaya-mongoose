@@ -15,7 +15,8 @@ export const saveProduct = async (request, response, next) => {
 }
 
 export const TopBooks =(request,response,next)=>{
-    Book.find().then(result=>{
+    console.log("Top books called...");
+    Book.find().limit(10).then(result=>{
      return response.status(200).json({topbookList:result,status:true});
    }).catch(err=>{
      return response.status(500).json({ Message: "Internal server error...", status: false });
@@ -46,6 +47,7 @@ export const removeBook=async(request,response,next)=>{
 }
 
 export const bookList =(request,response,next)=>{
+    console.log("Book list called...");
    Book.find().then(result=>{
     return response.status(200).json({bookList:result,status:true});
   }).catch(err=>{
@@ -61,7 +63,17 @@ export const DonateBookList =(request,response,next)=>{
    })
   
  }
-
+export const searchByCategoryId = async (request,response,next)=>{
+    try{
+        console.log("Search Book by Category called")
+        let status = await Book.find({categoryId : request.body.id});
+        status ? response.status(200).json({result:status,status:true}): response.status(400).json({Message:"Bed Request...",status : false});
+    }catch(err)
+    {
+        console.log(err);
+        return response.status(500).json({Message : "Internal Server Error",status:false});
+    } 
+}
 
  export const searchByAuther = (request,response,next)=>{
     Book.find({ author : request.body.author}).then(result=>{
