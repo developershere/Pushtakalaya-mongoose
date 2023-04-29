@@ -1,8 +1,9 @@
 import express from "express";
 import { body } from "express-validator";
 import { addBook, saveProduct, removeBook, bookList, DonateBookList, searchByAuther, searchByBookName,searchByCategoryId, TopBooks } from "../controller/book.controller.js"
-
+import multer from "multer";
 const router = express.Router();
+const upload = multer({dest:"/public/images"});
 router.post("/add", body("name", "Book Name Required").notEmpty(),
     body("author").notEmpty(),
     body("language").notEmpty(),
@@ -17,7 +18,7 @@ router.post("/add", body("name", "Book Name Required").notEmpty(),
     body("permission").notEmpty(),
     body("categoryId").notEmpty(),
     body("publicationDate").notEmpty(),
-    body("published").notEmpty(), addBook);
+    body("published").notEmpty(),upload.single("image") ,addBook);
 
 router.post('/saveAll', saveProduct);
 

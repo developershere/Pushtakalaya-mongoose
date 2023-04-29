@@ -3,14 +3,12 @@ import uniqueValidator from 'mongoose-unique-validator';
 const CartSchema = new mongoose.Schema({
     userId: {
         type:mongoose.Schema.Types.ObjectId,
-        ref:"user",
-        unique : true    
+        ref:"user"   
     },
     cartItems:[{
         bookId : {
             type : mongoose.Schema.Types.ObjectId,
-            ref:"book",
-            unique : true
+            ref:"book"
         }
     }]
 });

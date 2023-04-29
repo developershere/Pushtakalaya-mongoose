@@ -65,8 +65,9 @@ export const DonateBookList =(request,response,next)=>{
  }
 export const searchByCategoryId = async (request,response,next)=>{
     try{
+        console.log(request.body.categoryId);
         console.log("Search Book by Category called")
-        let status = await Book.find({categoryId : request.body.id});
+        let status = await Book.find({categoryId : request.body.categoryId});
         status ? response.status(200).json({result:status,status:true}): response.status(400).json({Message:"Bed Request...",status : false});
     }catch(err)
     {
