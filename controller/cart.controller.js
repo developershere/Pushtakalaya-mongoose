@@ -6,7 +6,7 @@ export const addToCart=async(request,response,next)=>{
     let cart = await Cart.findOne({userId:request.body.userId});
     if(cart){
         if(cart.cartItems.some((item)=>item.bookId==request.body.bookId))
-          return response.status(200).json({message:"Book Already Exist In Cart"});
+          return response.status(400).json({message:"Book Already Exist In Cart"});
           cart.cartItems.push({bookId:request.body.bookId});
         
         let savecart = await cart.save();
@@ -21,13 +21,14 @@ export const addToCart=async(request,response,next)=>{
 
   }catch(err){
     console.log(err);
-    return response.status(200).json({msg:"Inernal Server Error",status:false});
+    return response.status(500).json({msg:"Inernal Server Error",status:false});
   }
 }
 
 export const fetchCart =(request,response,next)=>{
+  console.log("Fetch cart called....");
     Cart.find({userId:request.body.userId}).populate("cartItems.bookId").then(result=>{
-          return response.status(200).json({cart:result,status:true});
+          return response.status(200).json({cart:result[0].cartItems,status:true});
     }).catch(err=>{
       console.log(err);
         return response.status(200).json({msg:"Inernal Server Error",status:false});
@@ -46,5 +47,17 @@ export const removeBookInCart=async(request,response,next)=>{
      
   } catch (err) {
       return response.status(500).json({ err: "Internal Server Error", status: false });
+  }
+}
+
+export const userCart = async (request,response,next)=>{
+  try{
+    let data = await Cart.findOne({userId:request.body.userId}).populate("cartItems.bookId");
+    console.log(data);
+    return response.status(200).json({result:data,status:true});
+  }catch(err)
+  {
+    console.log(err);
+    return response.status(500).json({Message:"Internal Server Error...",status:false});
   }
 }
