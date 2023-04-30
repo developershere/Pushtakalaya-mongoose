@@ -77,7 +77,7 @@ export const userProfile = async (request,response,next)=>{
 
 
 export const updateProfile = async (req,response,next)=>{
-    
+    console.log("update");
    
     try{
     const user = await User.findById(req.body._id);
@@ -95,3 +95,6 @@ export const updateProfile = async (req,response,next)=>{
      return response.status(500).json({error : "Internal server error"});
     }
  }
+
+
+ 

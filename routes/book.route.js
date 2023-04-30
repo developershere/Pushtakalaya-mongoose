@@ -1,6 +1,6 @@
 import express from "express";
 import{body }from "express-validator";
-import{addBook,saveProduct,removeBook,TopBooks, bookList,DonateBookList,searchByCategoryId, searchByAuther,searchByBookName,viewByUserId,searchByKeyWord,updateBook}from "../controller/book.controller.js"
+import{addBook,saveProduct,removeBook,TopBooks, bookList,DonateBookList,searchByCategoryId,TotalPendingBook, searchByAuther,searchByBookName,viewByUserId,searchByKeyWord,updateBook, TotalBook}from "../controller/book.controller.js"
 
 const router=express.Router(); 
 router.post("/add",body("name","Book Name Required").notEmpty(),
@@ -22,14 +22,16 @@ body("published").notEmpty(),addBook);
 router.post('/saveAll',saveProduct);
 router.get("/topBooks",TopBooks)
 router.get("/list",bookList);
+router.get("/totalbook",TotalBook)
 router.get("/freeBookList",DonateBookList);
-router.get('/deleteBook/:id',removeBook);
+router.post('/deleteBook',removeBook);
 router.post('/searchbyAuthor',searchByAuther);
 router.post('/searchByCategoryId',searchByCategoryId)
 router.get("/searchByBookName/:name",searchByBookName);
 router.post("/byuserId",viewByUserId);
 router.get("/searchByKeyWord/:keyword", searchByKeyWord)
-router.post("/update-book",updateBook)
+router.post("/update-book",updateBook);
+router.get("/totalpendingbook",TotalPendingBook)
 
 
 export default router;

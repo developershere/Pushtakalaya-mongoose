@@ -1,66 +1,67 @@
 
 import mongoose from "mongoose";
 
-const bookSchema =new mongoose.Schema({
+const bookSchema = new mongoose.Schema({
     name: {
-        type:String,
-        required:true,
+        type: String,
+        required: true,
 
     },
     description: {
-        type:String,
-        required:true,
+        type: String,
+        required: true,
     },
-    author: {                           
-        type:String,
-        required:true,
+    author: {
+        type: String,
+        required: true,
     },
     price: {
-        type:Number,
-        required:true,
+        type: Number,
+        required: true,
     },
     categoryId: {
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"category"
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "category"
     },
     language: {
-        type:String,
-        required:true,
+        type: String,
+        required: true,
     },
     edition: {
-        type:String,
-        required:true,
+        type: String,
+        required: true,
     },
     photos: {
-        type:String,
-        required:true,
+        type: String,
+        required: true,
     },
     publicationDate: {
-        type:Date,
-        required:true,
+        type: String,
+        required: true,
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref:'user'
+        ref: 'user'
     },
     status: {
-        type:Boolean,
-        required:true
-       
+        type: Boolean,
+        required: true
+
     },
     cityId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref:'city'
+        ref: 'city'
     },
     permission: {
         type: Boolean,
-        required:true
+        default:false,
+        required: true
     },
-    pinCode: {
-        type:Number,
-        required:true
+    pincode: {
+        type: Number,
+        required: true
     },
 
 });
 
-export const Book = mongoose.model("book",bookSchema);
+export const Book = mongoose.model("book", bookSchema);

@@ -11,6 +11,6 @@ body("email","Email Must be Required"),body("email","please Enter correct email"
 router.post("/signIn",signIn)
 router.get("/userList",allUserList)
 router.post("/viewprofile" , userProfile );
-router.put("/updateProfile",updateProfile);
+router.post("/updateProfile",updateProfile);
 
 export default router;
