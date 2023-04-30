@@ -53,7 +53,7 @@ const bookSchema =new mongoose.Schema({
     },
     status: {
         type:Boolean,
-        required:true,
+        default : true,
         trim : true
        
     },
@@ -64,7 +64,7 @@ const bookSchema =new mongoose.Schema({
     },
     permission: {
         type: Boolean,
-        required:true,
+        default : false,
         trim : true
     },
     pincode: {
