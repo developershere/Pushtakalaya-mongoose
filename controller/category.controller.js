@@ -15,7 +15,6 @@ export const addCategory = async (request, response, next) => {
 
 
 export const list = (request, response, next) => {
-    console.log("Category list called...");
     Category.find().then(result => {
         return response.status(200).json({ category: result, msg: "category List", status: true });
     }).catch(err => {
@@ -38,8 +37,8 @@ export const removeCategory = async (request, response, next) => {
 
 export const editCategory = async (request, response, next) => {
     try {
-       await Category.findOneAndUpdate({_id:request.body.id},{ $set:{  categoryName : request.body.categoryName } },{new:true})?response.status(200).json({msg:"Category Update",status:true}):response.status(404).json({err:"Request Resource Not Found"});
-        
+        await Category.findOneAndUpdate({ _id: request.body.id }, { $set: { categoryName: request.body.categoryName } }, { new: true }) ? response.status(200).json({ msg: "Category Update", status: true }) : response.status(404).json({ err: "Request Resource Not Found" });
+
     } catch (err) {
         console.log(err);
         return response.status(500).json({ err: "Internal Server Error", status: false });
