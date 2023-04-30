@@ -20,6 +20,7 @@ export const TopBooks = (request, response, next) => {
         return response.status(500).json({ Message: "Internal server error...", status: false });
     })
 }
+
 export const addBook = async (request, response, next) => {
     try {
 
@@ -148,4 +149,3 @@ export const updateBook = async (request, response, next) => {
         return response.status(500).json({ error: "Internal server error" });
     }
 }
-

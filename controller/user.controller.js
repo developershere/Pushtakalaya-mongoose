@@ -22,6 +22,9 @@ export const verifyEmail = async (request, response, next) => {
         return response.status(200).json({ Message: "Internal Server Error...", status: false });
     }
 }
+// import env from '../env.json';
+import nodemailer from 'nodemailer';
+// import env from 'env';
 
 export const signup = async (request, response, next) => {
     try {

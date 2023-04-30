@@ -21,12 +21,15 @@ body("publicationDate").notEmpty(),
 upload.single("photos"),addBook);
 
 router.post('/saveAll', saveProduct);
+
 router.get("/topBooks",TopBooks);
+
 router.get("/list", bookList);
 router.get("/freebooklist", DonateBookList);
 router.get('/delete-book/:id', removeBook);
 router.post('/search', searchByAuther);
 router.get("/searchByBookName/:name", searchByBookName);
+
 router.post("/searchByCategoryId",searchByCategoryId);
 router.post("/searchByKeyword",searchByKeyword);
 
