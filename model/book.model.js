@@ -5,15 +5,18 @@ const bookSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
+        trim : true
 
     },
     description: {
         type: String,
         required: true,
+        trim : true
     },
     author: {
         type: String,
         required: true,
+        trim : true
     },
     price: {
         type: Number,
@@ -26,18 +29,22 @@ const bookSchema = new mongoose.Schema({
     language: {
         type: String,
         required: true,
+        trim : true
     },
     edition: {
         type: String,
         required: true,
+        trim : true
     },
     photos: {
         type: String,
         required: true,
+        trim : true
     },
     publicationDate: {
         type: String,
         required: true,
+        trim : true
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -45,22 +52,25 @@ const bookSchema = new mongoose.Schema({
     },
     status: {
         type: Boolean,
-        required: true
+        default:true
 
     },
     cityId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'city'
+        ref: 'city',
+        trim : true
     },
     permission: {
         type: Boolean,
         default:false,
-        required: true
+        required: true,
+        trim : true
     },
     pincode: {
         type: Number,
-        required: true
-    },
+        required: true,
+        trim : true
+    }
 
 });
 

@@ -1,7 +1,6 @@
 import { request, response } from "express";
 import { Book } from "../model/book.model.js";
 import { validationResult } from "express-validator";
-
 export const saveProduct = async (request, response, next) => {
     try {
         for (let book of request.body) {
@@ -13,18 +12,38 @@ export const saveProduct = async (request, response, next) => {
         return response.status(500).json({ msg: "Internal Server Error", status: false });
     }
 }
+
+
+
+
 export const addBook = async (request, response, next) => {
     try {
+        console.log("add book");
+        console.log(request.file);
+        let name = request.body.name;
+        let description = request.body.description;
+        let author = request.body.author;
+        let price = request.body.price;
+        let categoryId = request.body.categoryId;
+        let language = request.body.language;
+        let edition = request.body.edition;
+        let photos = request.file.filename+"@mausam";
+        let publicationDate = request.body.publicationDate;
+        let userId = request.body.userId;
+        let cityId = request.body.cityId;
+        let pincode = request.body.pincode;
         let error = await validationResult(request.body);
         if (!error.isEmpty())
             return response.status(400).json({ Error: "Bad request ", Message: error.array() });
-        await Book.create(request.body) ? response.status(200).json({ Message: "Book has been saved ...", status: true }) : response.status(500).json({ Message: "Internal Server error...", status: false })
+        await Book.create({ name, description, author, price, categoryId, language, edition, photos, publicationDate, userId, cityId, pincode }) ? response.status(200).json({ Message: "Book has been saved ...", status: true }) : response.status(500).json({ Message: "Internal Server error...", status: false })
 
     } catch (err) {
         console.log(err);
         return response.status(500).json({ err: "Internal Server Error", status: false });
     }
 }
+
+
 
 export const removeBook = async (request, response, next) => {
     try {
@@ -141,7 +160,7 @@ export const searchByKeyWord = async (request, response, next) => {
 }
 
 export const updateBook = async (request, response, next) => {
-    console.log(request.body)
+  
     try {
         let ubook = await Book.findById(request.body.id)
         if (ubook) {
@@ -180,3 +199,4 @@ export const TotalPendingBook=(request,response,next)=>{
         return response.status(500).json({ Message: "Internal server error...", status: false });
     })
 }
+

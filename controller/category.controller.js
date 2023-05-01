@@ -24,7 +24,7 @@ export const list = (request, response, next) => {
 }
 
 export const removeCategory = async (request, response, next) => {
-        console.log("jhgf");
+       
         Category.findByIdAndRemove(request.body.categoryId)
         .then(result => {
             return response.status(200).json({ message: "Category removed", status: true ,result});
@@ -38,7 +38,7 @@ export const removeCategory = async (request, response, next) => {
 
 
 export const editCategory = async (request, response, next) => {
-    console.log("update")
+   
     try {
         let updateCategory = await Category.findById(request.body.id)
         if(updateCategory){

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import uniqueValidator from 'mongoose-unique-validator';
 import { boolean } from "webidl-conversions";
 
 const userSchema =new mongoose.Schema({
@@ -9,10 +10,12 @@ const userSchema =new mongoose.Schema({
     email:{
         type:String,
         required:true,
+        unique : true
     },
     password: {
         type:String,
-        required:true
+        required:true,
+        unique : true
     },
     contact: {
         type: Number,
@@ -27,5 +30,5 @@ const userSchema =new mongoose.Schema({
         default:true
     }
 })
-
+userSchema.plugin(uniqueValidator);
 export const User = mongoose.model("user",userSchema);
