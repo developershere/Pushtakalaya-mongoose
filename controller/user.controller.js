@@ -4,7 +4,8 @@ import { User } from "../model/user.model.js"
 import bcrypt from "bcryptjs"
 import { request, response } from "express";
 import jwt from "jsonwebtoken";
-import mail from '../services/email.js'
+
+
 export const verifyEmail = async (request, response, next) => {
     try {
         const flag = await User.findOne({ email: request.body.email });
@@ -22,9 +23,6 @@ export const verifyEmail = async (request, response, next) => {
         return response.status(200).json({ Message: "Internal Server Error...", status: false });
     }
 }
-// import env from '../env.json';
-import nodemailer from 'nodemailer';
-// import env from 'env';
 
 export const signup = async (request, response, next) => {
     try {
@@ -32,7 +30,10 @@ export const signup = async (request, response, next) => {
         if (!errors.isEmpty())
             return response.status(400).json({ message: "bed request ", masseges: errors.array() })
         request.body.password = await bcrypt.hash(request.body.password, await bcrypt.genSalt(15));
-        if (new Date().getMinutes() <= time + 5) {
+
+        let x = Math.floor((Math.random() * 9999) + 1000);
+        var time = new Date().getMinutes();
+        if (new Date().getMinutes() <= time + 5) {                                     
             if (request.body.otp == 470115) {
                 const user = await User.create(request.body);
                 return response.status(200).json({ user: user, status: true });
@@ -51,13 +52,13 @@ export const signup = async (request, response, next) => {
 
 export const signIn = async (request, response, next) => {
     try {
+  
         let user = await User.findOne({ email: request.body.email })
-        let status = user ? await bcrypt.compare(request.body.password, user.password) : false;
-        console.log(status);
-        if (status) {
-            let token = jwt.sign({ email: user?.email }, 'zxcvbnmasdfghjkl');
-            return response.status(200).json({ user: { ...user.toObject(), password: undefined, token: token }, msg: "SignIn Success", status: true, });
-        }
+        let status = user ? bcrypt.compare(request.body.password, user.password) : response.status(404).json({ err: "unauthorized person" });
+        if(status){
+            let token=jwt.sign({email:user.email},'zxcvbnmasdfghjkl');
+            return response.status(200).json({user:{...user.toObject(),password:undefined},msg:"SignIn Success",status:true,token:token});
+        } 
         return response.status(404).json({ err: "unauthorized person" })
 
     } catch (err) {
@@ -65,6 +66,8 @@ export const signIn = async (request, response, next) => {
         return response.status(200).json({ err: "Internal Server Error", status: false });
     }
 }
+
+
 
 export const allUserList = (request, response, next) => {
     User.find().then(result => {
@@ -86,16 +89,27 @@ export const userProfile = async (request, response, next) => {
     }
 }
 
-export const updateProfile = async (request, response, next) => {
-    try {
-        let update = await User.updateOne({ _id: request.body.id }, { email: request.body.email, name: request.body.name, contact: request.body.contact })
-        return response.status(200).json({ message: "profile update", result: update, status: true });
-
-    }
-    catch (err) {
-        return response.staus(500).json({ error: "Internal server error" });
-    }
+export const updateProfile = async (req,response,next)=>{
+    console.log("xcvbn")
+  
+   try{
+   const user = await User.findById(req.body._id);
+   if (user) {
+       user.name = req.body.name || user.name;
+       user.email = req.body.email || user.email;
+       user.photo = req.body.photo || user.photo;
+      
+       const updatedUser = await user.save();
+       return response.status(200).json({updatedUser:updatedUser,staus:true});
+   }
 }
+   catch(err){
+       console.log(err);
+    return response.status(500).json({error : "Internal server error"});
+  }
+}
+
+
 export const forgotPassword = async (request, response, next) => {
     try {
         const { email } = request.body;

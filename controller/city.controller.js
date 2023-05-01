@@ -16,6 +16,10 @@ export const cityList = (request, response, next) => {
     return response.status(500).json({ err: "Internal Server Error", status: false })
   })
 }
+
+
+
+
 export const findCityByState = async (request, response, next) => {
   try {
     const cities = await City.find({ stateId: request.body.stateId });

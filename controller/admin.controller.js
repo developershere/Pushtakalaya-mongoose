@@ -6,7 +6,8 @@ import jwt from "jsonwebtoken";
 export const signUp=async(request,response,next)=>{
     try{
    !(validationResult(request))?response.status(400).json({err:"Bad Request",status:false}):request.body.password =await bcrypt.hash(request.body.password,await bcrypt.genSalt(13));
-     return await Admin.create(request.body)?response.status(200).json({msg:"SignUp success"}):response.status(400).json({err:"Bad Request",status:false});
+   let admin = await Admin.create(request.body);
+   return  response.status(200).json({result:admin,msg:"SignUp success",status:true })
     }catch(err){
         console.log(err);
         return response.status(500).json({err:"Internal Server Error",status:false});
