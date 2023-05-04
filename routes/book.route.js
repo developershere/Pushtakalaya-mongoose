@@ -24,7 +24,7 @@ router.post('/saveAll', saveProduct);
 
 router.get("/topBooks",TopBooks);
 
-router.get("/list", bookList);
+router.get("/totalbook", bookList);
 router.get("/freebooklist", DonateBookList);
 router.get('/delete-book/:id', removeBook);
 router.post('/search', searchByAuther);

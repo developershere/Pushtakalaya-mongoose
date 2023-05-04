@@ -23,7 +23,8 @@ export const TopBooks = (request, response, next) => {
 
 export const addBook = async (request, response, next) => {
     try {
-
+        console.log(request.body.photos);
+        console.log(request.file);
         let name = request.body.name;
         let description = request.body.description;
         let author = request.body.author;
@@ -31,7 +32,7 @@ export const addBook = async (request, response, next) => {
         let categoryId = request.body.categoryId;
         let language = request.body.language;
         let edition = request.body.edition;
-        let photos = request.file.filename;
+        let photos = "Pustakalaya@"+request.file.filename;
         let publicationDate = request.body.publicationDate;
         let userId = request.body.userId;
         let cityId = request.body.cityId;

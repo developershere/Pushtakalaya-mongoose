@@ -5,17 +5,14 @@ import { signup ,signIn,allUserList,userProfile,forgotPassword,updateProfile, ve
 
 const router=express.Router();
 
-router.post("/signup",body("name","Name Must Be Required").notEmpty(),
-body("password","password Must Be Required").notEmpty(),
-body("contact","contact Must Be Required").notEmpty(),
-body("email","Email Must be Required"),body("email","please Enter correct email"),signup);
+router.post("/signup",signup);
 
 router.post("/signIn",signIn)
 router.get("/userList",allUserList)
 
 router.post("/viewprofile" , userProfile );
 router.put("/updateProfile",updateProfile);
-router.post("/mausam",verifyEmail);
+router.post("/thakur",verifyEmail);
 
 router.post('/forgot-password',forgotPassword);
 

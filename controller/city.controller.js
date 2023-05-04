@@ -18,6 +18,7 @@ export const cityList = (request, response, next) => {
 }
 export const findCityByState = async (request, response, next) => {
   try {
+    console.log("CIties called...")
     const cities = await City.find({ stateId: request.body.stateId });
     return response.status(200).json({ city: cities, status: true });
   } catch (err) {
