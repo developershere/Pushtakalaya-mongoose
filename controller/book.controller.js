@@ -27,7 +27,7 @@ export const addBook = async (request, response, next) => {
         let categoryId = request.body.categoryId;
         let language = request.body.language;
         let edition = request.body.edition;
-        let photos = request.file.filename+"@mausam";
+        let photos = "Pustakalaya@"+request.file.filename;
         let publicationDate = request.body.publicationDate;
         let userId = request.body.userId;
         let cityId = request.body.cityId;

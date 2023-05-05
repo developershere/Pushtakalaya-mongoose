@@ -2,11 +2,11 @@ import { request, response } from "express";
 import { Cart } from "../model/cart.model.js";
 import { Order } from "../model/order.model.js";
 export const saveOrder = (request, response, next) => {
-
+     console.log(request.body)
     Order.create({
         userId: request.body.userId, cartId: request.body.cartId, billamount: request.body.billamount, contactPerson: request.body.contactPerson, contactNumber: request.body.contactNumber,
         delieveryAddress: request.body.delieveryAddress, status: request.body.status, paymentMode: request.body.paymentMode, sellerId: request.body.sellerId,
-        orderItem: [{ bookId: request.body.bookId }]
+        orderItem: request.body.cartItems
     }).then((result) => {
         Cart.findOne({ userId: request.body.userId }).then(result => {
             result.deleteOne().then(result => {

@@ -19,7 +19,7 @@ export const addToCart = async (request, response, next) => {
     }
 
   } catch (err) {
-    console.log(err);
+   
     return response.status(500).json({ msg: "Inernal Server Error", status: false });
   }
 }
@@ -28,32 +28,49 @@ export const fetchCart = (request, response, next) => {
   Cart.find({ userId: request.body.userId }).populate("cartItems.bookId").then(result => {
     return response.status(200).json({ cart: result[0].cartItems, status: true });
   }).catch(err => {
-    console.log(err);
+   
     return response.status(200).json({ msg: "Inernal Server Error", status: false });
   })
 }
 
 
 export const removeBookInCart = async (request, response, next) => {
-  try {
-    let cart = await Cart.find({ userId: request.body.userId }).populate("cartItems.bookId");
-    console.log(cart);
-    if (!cart)
-
-      return response.status(404).json({ err: " Request Resource not found", status: false })
-    await cart.deleteOne() ? response.status(200).json({ msg: "Remove Book In Cart ", status: true }) : response.status(404).json({ err: "Resource not found", status: false });
-
-  } catch (err) {
-    return response.status(500).json({ err: "Internal Server Error", status: false });
+   console.log(request.body);
+try {
+  let cart = await Cart.findOne({ userId: request.body.userId })
+ 
+  if (cart) {
+    let cartItemList = cart.cartItems;
+    console.log(cartItemList);
+    let index = cartItemList.findIndex((item) => item._id == request.body._id)
+    if (index != -1) {
+      cart.cartItems.splice(index, 1)
+      cart.save();
+      cart = await cart.populate('cartItems.bookId');
+      return response.status(200).json({ message: "book removed in cart", status: true ,cart})
+    }
+    else {
+      return response.status(400).json({ error: "not found", status: false });
+    }
+  }
+  else {
+    return response.status(400).json({ error: "Bad request", status: false });
   }
 }
+catch (err) {
+  console.log(err);
+  
+  return response.status(500).json({ message: "Internal server error", status: false });
+  }
+}
+
 
 export const userCart = async (request, response, next) => {
   try {
     let data = await Cart.findOne({ userId: request.body.userId }).populate("cartItems.bookId");
     return response.status(200).json({ result: data, status: true });
   } catch (err) {
-    console.log(err);
+ 
     return response.status(500).json({ Message: "Internal Server Error...", status: false });
   }
 }
