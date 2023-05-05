@@ -101,6 +101,7 @@ export const DonateBookList = (request, response, next) => {
 
 
 export const searchByAuther = (request, response, next) => {
+    console.log("search by author")
     Book.find({ author: request.body.author }).then(result => {
         console.log(result);
         return response.status(200).json({ result: result, message: "list", status: true })
@@ -164,33 +165,34 @@ export const updateBook = async (request, response, next) => {
     try {
         let ubook = await Book.findById(request.body.id)
         if (ubook) {
-            ubook.name = request.body.name || ubook.name,
-                ubook.price = request.body.price || ubook.price,
-                ubook.author = request.body.author || ubook.author,
-                ubook.pincode = request.body.pincode || ubook.pincode,
-                ubook.description = request.body.description || ubook.description
-                ubook.photos = request.body.photos || ubook.photos,
-                ubook.cityId = request.body.cityId || ubook.cityId
-                ubook.categoryId = request.body.categoryId || ubook.categoryId,
-                ubook.stateId = request.body.stateId || ubook.stateId,
-                ubook.userId = request.body.userId || ubook.userId,
-                ubook.edition = request.body.edition || ubook.edition,
-                ubook.status = request.body.status || ubook.status,
-                ubook.language = request.body.language || ubook.language,
-                ubook.permission= request.body.permission || ubook.permission,
-                ubook.publicationDate = request.body.publicationDate || ubook.publicationDate
+
+            ubook.name = request.body.name.trim() || ubook.name,
+            ubook.price = request.body.price.trim() || ubook.price,
+            ubook.author = request.body.author.trim() || ubook.author,
+            ubook.pincode = request.body.pincode.trim() || ubook.pincode,
+            ubook.description = request.body.description.trim() || ubook.description
+            ubook.cityId = request.body.cityId.trim() || ubook.cityId
+           ubook.categoryId = request.body.categoryId.trim() || ubook.categoryId,
+            ubook.edition = request.body.edition.trim() || ubook.edition,
+            ubook.language = request.body.language.trim() || ubook.language,
+            ubook.publicationDate = request.body.publicationDate.trim() || ubook.publicationDate,
+            ubook.photos = request.body.photos || ubook.photos,
+            ubook.status = request.body.status || ubook.status,
+            ubook.userId = request.body.userId || ubook.userId,
+            ubook.permission= request.body.permission || ubook.permission;
 
         }
 
         const updated = await ubook.save()
         console.log(updated);
-        return response.status(200).json({ result: updated, message: "book update succesfully" })
+        return response.status(200).json({ result: updated, message: "book update succesfully",status:true })
     }
     catch (err) {
         console.log(err);
-        return response.status(500).json({ error: "Internal server error" });
+        return response.status(500).json({ error: "Internal server error",status:false });
     }
 }
+
 
 export const TotalPendingBook=(request,response,next)=>{
     Book.find({ permission: false }).then(result => {
@@ -198,5 +200,16 @@ export const TotalPendingBook=(request,response,next)=>{
     }).catch(err => {
         return response.status(500).json({ Message: "Internal server error...", status: false });
     })
+}
+
+export const searchByuserId = async (request, response, next) => {
+    try {
+        let books = await Book.find({ userId: request.body.userId });
+        return response.status(200).json({ message: "book list ", status: true, result: books });
+    }
+    catch (err) {
+        console.log(err);
+        return response.status(500).json({ error: "Internal server error" });
+}
 }
 
