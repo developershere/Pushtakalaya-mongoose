@@ -8,40 +8,30 @@ import jwt from "jsonwebtoken";
 
 export const verifyEmail = async (request, response, next) => {
     try {
+        console.log("fgsdgs");
         const flag = await User.findOne({ email: request.body.email });
-        console.log(flag);
+       
         if (flag) {
-            return response.status(200).json({ Message: "User is already exists...", status: false });
+            return response.status(400).json({ Message: "User is already exists...", status: false });
         }
         const x = Math.floor((Math.random() * 9999) + 1000);
-        return response.status(200).json({ result: { currentTime: new Date().getMinutes() + 5, OTP: x }, status: true });
-        // let data = await mail(request.body.email, "Email Verification from Pustakalaya", request.body.name, x);
-        // return data ? response.status(200).json({ Message: "Internal Server Error...", status: false }):response.status(200).json({ result: { currentTime: new Date().getMinutes(), OTP: x }, status: true });
+        let data = await mail(request.body.email, "Email Verification from Pustakalaya", request.body.name, x);
+        return data ? response.status(200).json({ Message: "Internal Server Error...", status: false }):response.status(200).json({ result: { currentTime: new Date().getMinutes()+5, OTP: x }, status: true });
     }
     catch (err) {
         console.log(err);
-        return response.status(200).json({ Message: "Internal Server Error...", status: false });
+        return response.status(500).json({ Message: "Internal Server Error...", status: false });
     }
 }
-
 export const signup = async (request, response, next) => {
     try {
+        console.log("Signup called....");
         const errors = await validationResult(request);
         if (!errors.isEmpty())
             return response.status(400).json({ message: "bed request ", masseges: errors.array() })
         request.body.password = await bcrypt.hash(request.body.password, await bcrypt.genSalt(15));
-
-        let x = Math.floor((Math.random() * 9999) + 1000);
-        var time = new Date().getMinutes();
-        if (new Date().getMinutes() <= time + 5) {                                     
-            if (request.body.otp == 470115) {
-                const user = await User.create(request.body);
-                return response.status(200).json({ user: user, status: true });
-            }
-            return response.status(400).json({ message: "OTP is mismetched...", status: false });
-        }
-
-        return response.status(400).json({ message: "OTP is Expires", status: false });
+        const register = await User.create(request.body);
+        return response.status(200).json({data : register, status : true});
     }
     catch (err) {
         console.log(err);
@@ -91,7 +81,6 @@ export const userProfile = async (request, response, next) => {
 
 export const updateProfile = async (req,response,next)=>{
     console.log("xcvbn")
-    console.log(req.body)
   
    try{
    const user = await User.findById(req.body._id);

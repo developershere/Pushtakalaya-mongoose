@@ -19,7 +19,6 @@ body("permission").notEmpty(),
 body("categoryId").notEmpty(),
 body("publicationDate").notEmpty(),
 upload.single("photos"),addBook);
-
 router.post('/saveAll',saveProduct);
 router.get("/topBooks",TopBooks)
 router.get("/list",bookList);
@@ -30,7 +29,7 @@ router.post('/searchbyAuthor',searchByAuther);
 router.post('/searchByCategoryId',searchByCategoryId)
 router.get("/searchByBookName/:name",searchByBookName);
 router.post("/byuserId",viewByUserId);
-router.get("/searchByKeyWord/:keyword", searchByKeyWord)
+router.post("/searchByKeyWord", searchByKeyWord)
 router.post("/update-book",updateBook);
 router.get("/totalpendingbook",TotalPendingBook)
 router.post("/serachByuserId",searchByuserId)
