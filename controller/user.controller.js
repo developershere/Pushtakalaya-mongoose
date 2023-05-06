@@ -41,10 +41,10 @@ export const signup = async (request, response, next) => {
 
 export const signIn = async (request, response, next) => {
     try {
+        console.log("Sign In called...");
         let user = await User.findOne({ email: request.body.email });
         console.log(await bcrypt.compare(request.body.password, user.password));
         let status = user ? await bcrypt.compare(request.body.password, user.password) : false;
-        console.log(status);
         if (status) {
             let token = jwt.sign({ email: user?.email }, 'zxcvbnmasdfghjkl');
             return response.status(200).json({ user: { ...user.toObject(), password: undefined, token: token }, msg: "SignIn Success", status: true, });

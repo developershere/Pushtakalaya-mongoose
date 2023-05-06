@@ -5,9 +5,9 @@ import { signup ,signIn,allUserList,userProfile,forgotPassword,updateProfile, ve
 
 const router=express.Router();
 
+router.post("/signIn",signIn)
 router.post("/signup",signup);
 
-router.post("/signIn",signIn)
 router.get("/userList",allUserList)
 
 router.post("/viewprofile" , userProfile );

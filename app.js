@@ -12,12 +12,15 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import Razorpay from "razorpay";
+import { fileURLToPath } from "url";
+import path from "path";
 dotenv.config();
 const app = express();
 mongoose.connect(process.env.MONGO_URL).then(()=>console.log("Database connected..."));
 app.set("view-engine","ejs");
 app.use(bodyParser.json()); 
-
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+app.use(express.static(path.join(__dirname,"public")));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors());
 dotenv.config();
