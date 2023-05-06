@@ -15,6 +15,7 @@ export const addCategory = async (request, response, next) => {
 
 
 export const list = (request, response, next) => {
+   
     Category.find().then(result => {
         return response.status(200).json({ category: result, msg: "category List", status: true });
     }).catch(err => {
@@ -23,25 +24,46 @@ export const list = (request, response, next) => {
 }
 
 export const removeCategory = async (request, response, next) => {
-    try {
-        let category = await Category.findById(request.params.id);
-        if (!category)
-            return response.status(404).json({ err: "Resource not found", status: false })
-        category.deleteOne({ id: request.params.id }) ? response.status(200).json({ msg: "Categoty Remove Succesfully", status: true }) : response.status(404).json({ err: "Request Resource Not Found", status: false });
-    } catch (err) {
-        return response.status(500).json({ err: "Internal Server Error", status: false });
-    }
+       
+        Category.findByIdAndRemove(request.body.categoryId)
+        .then(result => {
+            return response.status(200).json({ message: "Category removed", status: true ,result});
+        }).catch(err => {
+            console.log(err);
+            return response.status(500).json({ error: "Internal Server Error", status: false });
+      })
 }
 
 
 
-export const editCategory = async (request, response, next) => {
-    try {
-        await Category.findOneAndUpdate({ _id: request.body.id }, { $set: { categoryName: request.body.categoryName } }, { new: true }) ? response.status(200).json({ msg: "Category Update", status: true }) : response.status(404).json({ err: "Request Resource Not Found" });
 
+export const editCategory = async (request, response, next) => {
+   
+    try {
+        let updateCategory = await Category.findById(request.body.id)
+        if(updateCategory){
+            updateCategory.categoryName= request.body.categoryName||updateCategory.categoryName
+         const category=await  updateCategory.save();
+       return response.status(200).json({result:category,message : "Category update succesfully"})
+        } 
     } catch (err) {
         console.log(err);
         return response.status(500).json({ err: "Internal Server Error", status: false });
     }
 }
+
+
+ 
+
+
+
+export const addMoreCategory =(request,response,next)=>{
+    Category.create({categoryName : request.body.categoryName}).then(result=>{
+        return response.status(200).json({category:result,msg:"Category Added SuccesFully",status:true});
+    }).catch(err=>{
+        console.log(err);
+        return response.status(500).json({msg:"Internal Server Error",status:false});
+    })
+}
+
 

@@ -11,9 +11,10 @@ router.post("/signup",signup);
 router.get("/userList",allUserList)
 
 router.post("/viewprofile" , userProfile );
-router.put("/updateProfile",updateProfile);
-router.post("/thakur",verifyEmail);
-
+router.post("/updateProfile",updateProfile);
+router.get("/verifyEmail",verifyEmail);
 router.post('/forgot-password',forgotPassword);
 
 export default router;
+
+// completed

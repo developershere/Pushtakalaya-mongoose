@@ -23,7 +23,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.use(express.static(path.join(__dirname,"public")));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors());
-dotenv.config();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
+
+
 app.use("/user",userRoute);
 app.use("/state",stateRouter);
 app.use("/city",cityRouter);
@@ -34,7 +37,7 @@ app.use("/cart",CartRouter);
 app.use("/order",OrderRoute);
 export const instance = new Razorpay({
     key_id: process.env.key_id,
-    
+ 
 })
 app.listen(process.env.PORT,()=>{
     console.log("Server Started");

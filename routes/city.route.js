@@ -1,10 +1,12 @@
 import express from "express";
 
-import {addCity,cityList,findCityByState} from "../controller/city.controller.js"
+import {addCity,cityData,cityList,findCityByState} from "../controller/city.controller.js"
 
 const router=express.Router();
 router.post("/add-city",addCity);
-router.get("/list",cityList)
+router.get("/findCity",cityList)
+router.post("/byid",cityData)
+
 router.post("/findCityByState", findCityByState);
 
 export default router;
