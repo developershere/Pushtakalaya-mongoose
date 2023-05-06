@@ -1,6 +1,6 @@
 import express from "express";
 import{body }from "express-validator";
-import{addBook,saveProduct,removeBook,TopBooks, bookList,DonateBookList,searchByCategoryId,TotalPendingBook, searchByAuther,searchByBookName,viewByUserId,searchByKeyWord,updateBook, TotalBook}from "../controller/book.controller.js"
+import{addBook,saveProduct,removeBook,TopBooks, bookList,DonateBookList,searchByCategoryId,TotalPendingBook, searchByAuther,searchByBookName,viewByUserId,searchByKeyWord,updateBook, TotalBook, searchByuserId}from "../controller/book.controller.js"
 import multer from "multer";
 const router=express.Router(); 
 const upload = multer({dest:"public/images"});
@@ -33,6 +33,7 @@ router.post("/byuserId",viewByUserId);
 router.get("/searchByKeyWord/:keyword", searchByKeyWord)
 router.post("/update-book",updateBook);
 router.get("/totalpendingbook",TotalPendingBook)
+router.post("/serachByuserId",searchByuserId)
 
 // some api added
 export default router;

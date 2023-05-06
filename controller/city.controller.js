@@ -63,3 +63,12 @@ export const deleteCity = async (request, response) => {
   }
 };
 
+export  const cityData = (request,response,next)=>{
+  City.findOne({_id:request.body.cityId})
+  .then(result=>{
+        response.status(200).json({state : result.stateId,status:true});
+  }).catch(err=>{
+    response.status(500).json({Message : "Internal Server error....",status :true})
+});
+}
+

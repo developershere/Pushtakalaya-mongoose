@@ -12,5 +12,5 @@ const CartSchema = new mongoose.Schema({
         }
     }]
 });
-CartSchema.plugin(uniqueValidator);
+
 export const Cart =mongoose.model("cart",CartSchema);
