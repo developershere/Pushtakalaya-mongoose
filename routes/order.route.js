@@ -5,7 +5,7 @@ const router = express.Router();
 router.post("/saveorder",saveOrder);
 router.get("/vieworder", vieworderList)
 router.post("/vieworderByorderId",vieworderByorderId)
-router.get("/vieworderByuserId/:userId", vieworderHistoryByUserId);
+router.post("/vieworderByuserId", vieworderHistoryByUserId);
 router.put("/changestatus",changestatus);
 router.post("/viewproductBySellerId",viewOrderBySellerId)
 

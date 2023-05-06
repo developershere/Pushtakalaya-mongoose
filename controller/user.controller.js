@@ -4,8 +4,8 @@ import { User } from "../model/user.model.js"
 import bcrypt from "bcryptjs"
 import { request, response } from "express";
 import jwt from "jsonwebtoken";
-
-
+import env from "dotenv";
+env.config();
 export const verifyEmail = async (request, response, next) => {
     try {
         const flag = await User.findOne({ email: request.body.email });
@@ -56,7 +56,7 @@ export const signIn = async (request, response, next) => {
         let user = await User.findOne({ email: request.body.email })
         let status = user ? bcrypt.compare(request.body.password, user.password) : response.status(404).json({ err: "unauthorized person" });
         if(status){
-            let token=jwt.sign({email:user.email},'zxcvbnmasdfghjkl');
+            let token=jwt.sign({email:user.email},process.env.ENCRYPTION);
             return response.status(200).json({user:{...user.toObject(),password:undefined},msg:"SignIn Success",status:true,token:token});
         } 
         return response.status(404).json({ err: "unauthorized person" })

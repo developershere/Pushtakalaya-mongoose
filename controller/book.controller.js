@@ -101,9 +101,8 @@ export const DonateBookList = (request, response, next) => {
 
 
 export const searchByAuther = (request, response, next) => {
-    console.log("search by author")
+    
     Book.find({ author: request.body.author }).then(result => {
-        console.log(result);
         return response.status(200).json({ result: result, message: "list", status: true })
     }).catch(err => {
         console.log(err);
@@ -124,7 +123,6 @@ export const searchByBookName = (request, response, next) => {
 export const searchByCategoryId = (request, response, next) => {
 
     Book.find({ categoryId: request.body.categoryId}).then(result => {
-        console.log(result);
         return response.status(200).json({ result: result, status: true })
     }).catch(err => {
         return response.status(500).json({ msg: "Internal Server Error" });
@@ -144,9 +142,9 @@ export const viewByUserId = (request, response, next) => {
 export const searchByKeyWord = async (request, response, next) => {
     try {
         let searchResult = await Book.find({
-            $or: [{ name: { $regex: request.params.keyword, $options: "i" } },
-            { description: { $regex: request.params.keyword, $options: "i" } },
-            { author: { $regex: request.params.keyword, $options: "i" } }
+            $or: [{ name: { $regex: request.body.keyword, $options: "i" } },
+            { description: { $regex: request.body.keyword, $options: "i" } },
+            { author: { $regex: request.body.keyword, $options: "i" } }
             ]
         })
         if (searchResult.length > 0)
@@ -161,15 +159,15 @@ export const searchByKeyWord = async (request, response, next) => {
 }
 
 export const updateBook = async (request, response, next) => {
-  
+         console.log("update");
     try {
         let ubook = await Book.findById(request.body.id)
         if (ubook) {
 
             ubook.name = request.body.name.trim() || ubook.name,
-            ubook.price = request.body.price.trim() || ubook.price,
+            ubook.price = request.body.price || ubook.price,
             ubook.author = request.body.author.trim() || ubook.author,
-            ubook.pincode = request.body.pincode.trim() || ubook.pincode,
+            ubook.pincode = request.body.pincode|| ubook.pincode,
             ubook.description = request.body.description.trim() || ubook.description
             ubook.cityId = request.body.cityId.trim() || ubook.cityId
            ubook.categoryId = request.body.categoryId.trim() || ubook.categoryId,
@@ -184,7 +182,6 @@ export const updateBook = async (request, response, next) => {
         }
 
         const updated = await ubook.save()
-        console.log(updated);
         return response.status(200).json({ result: updated, message: "book update succesfully",status:true })
     }
     catch (err) {
@@ -211,5 +208,9 @@ export const searchByuserId = async (request, response, next) => {
         console.log(err);
         return response.status(500).json({ error: "Internal server error" });
 }
+}
+
+export const ChangePermission=async(request,response,next)=>{
+    
 }
 

@@ -37,6 +37,10 @@ const orderSchema = new mongoose.Schema({
         type:String,
         default:"Cash On Delievery"
     },
+    date:{
+       type:String,
+       default: new Date().toString().substring(4,15).replaceAll(' ','-')
+    },
     orderItem:[
         {
             bookId:{
