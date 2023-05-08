@@ -4,19 +4,18 @@ import { User } from "../model/user.model.js"
 import bcrypt from "bcryptjs"
 import { request, response } from "express";
 import jwt from "jsonwebtoken";
-
-
+import mail from "../service/email.js";
 export const verifyEmail = async (request, response, next) => {
     try {
         console.log("fgsdgs");
+        console.log(request.body.email);
         const flag = await User.findOne({ email: request.body.email });
-       
         if (flag) {
             return response.status(400).json({ Message: "User is already exists...", status: false });
         }
         const x = Math.floor((Math.random() * 9999) + 1000);
         let data = await mail(request.body.email, "Email Verification from Pustakalaya", request.body.name, x);
-        return data ? response.status(200).json({ Message: "Internal Server Error...", status: false }):response.status(200).json({ result: { currentTime: new Date().getMinutes()+5, OTP: x }, status: true });
+        return true ?response.status(200).json({ result: { currentTime: new Date().getMinutes()+5, OTP: x }, status: true }): response.status(200).json({ Message: "Internal Server Error...", status: false });
     }
     catch (err) {
         console.log(err);
@@ -26,11 +25,12 @@ export const verifyEmail = async (request, response, next) => {
 export const signup = async (request, response, next) => {
     try {
         console.log("Signup called....");
+        console.log(request.file.filename);
         const errors = await validationResult(request);
         if (!errors.isEmpty())
             return response.status(400).json({ message: "bed request ", masseges: errors.array() })
         request.body.password = await bcrypt.hash(request.body.password, await bcrypt.genSalt(15));
-        const register = await User.create(request.body);
+        const register = await User.create({name : request.body.name,email : request.body.email,contact : request.body.contact,password : request.body.password,photo : "Pustakalaya@"+request.file.filename,gender : "Male"});
         return response.status(200).json({data : register, status : true});
     }
     catch (err) {
@@ -79,16 +79,13 @@ export const userProfile = async (request, response, next) => {
     }
 }
 
-export const updateProfile = async (req,response,next)=>{
-    console.log("xcvbn")
-  
+export const updateProfile = async (request,response,next)=>{
    try{
-   const user = await User.findById(req.body._id);
+   const user = await User.findById(request.body._id);
    if (user) {
-       user.name = req.body.name || user.name;
-       user.email = req.body.email || user.email;
-       user.photo = req.body.photo || user.photo;
-      
+       user.name = request.body.name || user.name;
+       user.email = request.body.email || user.email;
+       user.photo = "Pustakalaya@"+request.file.filename || user.photo;
        const updatedUser = await user.save();
        return response.status(200).json({updatedUser:updatedUser,staus:true});
    }

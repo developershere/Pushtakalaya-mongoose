@@ -1,33 +1,41 @@
 import mongoose from "mongoose";
 import uniqueValidator from 'mongoose-unique-validator';
-import { boolean } from "webidl-conversions";
-
 const userSchema =new mongoose.Schema({
     name: {
         type:String,
-        required:true
+        required:true,
+        trim : true
     },
     email:{
         type:String,
         required:true,
-        unique : true
+        unique : true,
+        trim : true
     },
     password: {
         type:String,
         required:true,
-        unique : true
+        unique : true,
+        trim : true
     },
     contact: {
         type: Number,
         required:true,
+        trim : true
     },
     photo: {
-        type: String
+        type: String,
+        trim : true,
   
     },
     status: {
         type:Boolean,
         default:true
+    },
+    gender : {
+        type : String,
+        required : true,
+        trim : true,
     }
 })
 userSchema.plugin(uniqueValidator);
