@@ -1,6 +1,6 @@
 import express from "express";
 import{body }from "express-validator";
-import{addBook,saveProduct,removeBook,TopBooks,ChangePermission, bookList,DonateBookList,searchByCategoryId,TotalPendingBook, searchByAuther,searchByBookName,viewByUserId,searchByKeyWord,updateBook, TotalBook, searchByuserId}from "../controller/book.controller.js"
+import{addBook,saveProduct,removeBook,TopBooks, bookList,DonateBookList,searchByCategoryId,TotalPendingBook, searchByAuther,searchByBookName,viewByUserId,searchByKeyWord,updateBook, TotalBook, searchByuserId}from "../controller/book.controller.js"
 import multer from "multer";
 const router=express.Router(); 
 const upload = multer({dest:"public/images"});
@@ -19,7 +19,6 @@ body("permission").notEmpty(),
 body("categoryId").notEmpty(),
 body("publicationDate").notEmpty(),
 upload.single("photos"),addBook);
-
 router.post('/saveAll',saveProduct);
 router.get("/topBooks",TopBooks)
 router.get("/list",bookList);
@@ -34,7 +33,4 @@ router.post("/searchByKeyWord", searchByKeyWord)
 router.post("/update-book",updateBook);
 router.get("/totalpendingbook",TotalPendingBook)
 router.post("/serachByuserId",searchByuserId)
-router.post("/changePermission",ChangePermission);
-
-// some api added
 export default router;

@@ -63,7 +63,6 @@ const bookSchema = new mongoose.Schema({
     permission: {
         type: Boolean,
         default:false,
-        required: true,
         trim : true
     },
     pincode: {

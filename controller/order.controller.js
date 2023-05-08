@@ -44,7 +44,7 @@ export const vieworderHistoryByUserId = (request, response, next) => {
 export const vieworderByorderId = (request, response, next) => {
     Order.findById(request.body.id).populate({
         path:"orderItem",
-        populate:{path:"product"}
+        populate:{path:"bookId"}
     }).then((result) => {
         console.log(result);
         return response.status(200).json({ order: result, status: true });
