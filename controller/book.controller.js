@@ -189,3 +189,18 @@ export const searchByuserId = async (request, response, next) => {
         return response.status(500).json({ error: "Internal server error" });
     }
 }
+
+export const price = async (request,response,next)=>{
+    try {
+      console.log(request.body);
+      const minPrice = request.body.minPrice
+      const maxPrice = request.body.maxPrice
+      console.log(maxPrice, minPrice);
+      let books = await Book.find({ price: { $gte: maxPrice, $lte: minPrice } })
+      console.log(books);
+      return response.status(200).json({ result : books, message: "book list" });
+  }
+  catch (err) {
+      return response.status(500).json({ error: "Internal server error" });
+  }
+}
