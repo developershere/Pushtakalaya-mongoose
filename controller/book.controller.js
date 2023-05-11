@@ -147,6 +147,8 @@ export const updateBook = async (request, response, next) => {
     try {
         let ubook = await Book.findById(request.body.id)
         if (ubook) {
+            console.log(request.file);
+            console.log(request.body);
 
             ubook.name = request.body.name.trim() || ubook.name,
             ubook.price = request.body.price || ubook.price,
@@ -162,7 +164,7 @@ export const updateBook = async (request, response, next) => {
             ubook.status = request.body.status || ubook.status,
             ubook.userId = request.body.userId || ubook.userId,
             ubook.permission= request.body.permission || ubook.permission;
-
+            ubook.photos  = "Pustakalaya@" + request.file.filename || ubook.photos;
         }
         const updated = await ubook.save()
         return response.status(200).json({ result: updated, message: "book update succesfully",status:true })
@@ -188,4 +190,19 @@ export const searchByuserId = async (request, response, next) => {
         console.log(err);
         return response.status(500).json({ error: "Internal server error" });
     }
+}
+
+export const price = async (request,response,next)=>{
+    try {
+      console.log(request.body);
+      const minPrice = request.body.minPrice
+      const maxPrice = request.body.maxPrice
+      console.log(maxPrice, minPrice);
+      let books = await Book.find({ price: { $gte: maxPrice, $lte: minPrice } })
+      console.log(books);
+      return response.status(200).json({ result : books, message: "book list" });
+  }
+  catch (err) {
+      return response.status(500).json({ error: "Internal server error" });
+  }
 }

@@ -1,6 +1,6 @@
 import express from "express";
 import{body }from "express-validator";
-import{addBook,saveProduct,removeBook,TopBooks, bookList,DonateBookList,searchByCategoryId,TotalPendingBook, searchByAuther,searchByBookName,viewByUserId,searchByKeyWord,updateBook, TotalBook, searchByuserId}from "../controller/book.controller.js"
+import{addBook,saveProduct,removeBook,TopBooks, bookList,DonateBookList,searchByCategoryId,TotalPendingBook, searchByAuther,searchByBookName,viewByUserId,searchByKeyWord,updateBook, TotalBook, searchByuserId, price}from "../controller/book.controller.js"
 import multer from "multer";
 const router=express.Router(); 
 const upload = multer({dest:"public/images"});
@@ -30,7 +30,8 @@ router.post('/searchByCategoryId',searchByCategoryId)
 router.get("/searchByBookName/:name",searchByBookName);
 router.post("/byuserId",viewByUserId);
 router.post("/searchByKeyWord", searchByKeyWord)
-router.post("/update-book",updateBook);
+router.post("/update-book",upload.single("profile"),updateBook);
 router.get("/totalpendingbook",TotalPendingBook)
 router.post("/serachByuserId",searchByuserId)
+router.post("/price",price)
 export default router;
