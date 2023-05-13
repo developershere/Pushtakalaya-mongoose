@@ -45,7 +45,7 @@ export const signup = async (request, response, next) => {
 export const signIn = async (request, response, next) => {
     try {
   
-        let user = await User.findOne({ email: request.body.email })
+        let user = await User.findOne({ email:request.body.email})
         let status = user ? bcrypt.compare(request.body.password, user.password) : response.status(404).json({ err: "unauthorized person" });
         if(status){
             let token=jwt.sign({email:user.email},process.env.KEY_SECRET);
