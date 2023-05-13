@@ -35,13 +35,11 @@ export const fetchCart = (request, response, next) => {
 
 
 export const removeBookInCart = async (request, response, next) => {
-   console.log(request.body);
 try {
   let cart = await Cart.findOne({ userId: request.body.userId })
  
   if (cart) {
     let cartItemList = cart.cartItems;
-    console.log(cartItemList);
     let index = cartItemList.findIndex((item) => item._id == request.body._id)
     if (index != -1) {
       cart.cartItems.splice(index, 1)

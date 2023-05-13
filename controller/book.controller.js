@@ -51,9 +51,10 @@ export const removeBook = async (request, response, next) => {
 }
 
 export const bookList = (request, response, next) => {
+    console.log("sfgsd");
     let page = parseInt(request.query.page) || 1;
     let perPage = 10;
-    Book.find().skip((page - 1) * 10).limit(10).then(result => {
+    Book.find().skip((page-1) * 10).limit(10).then(result => {
         return response.status(200).json({ bookList: result, status: true });
     }).catch(err => {
         return response.status(500).json({ Message: "Internal server error...", status: false });
@@ -63,8 +64,10 @@ export const bookList = (request, response, next) => {
 
 
 export const TotalBook = (request, response, next) => {
-   
-    Book.find().then(result => {
+    let page = parseInt(request.query.page)|| 1;
+    console.log("Page : "+page);
+    let perPageData = 10;
+    Book.find().skip((page-1)*10).limit(10).then(result => {
         return response.status(200).json({ bookList: result, status: true });
     }).catch(err => {
         return response.status(500).json({ Message: "Internal server error...", status: false });
@@ -85,9 +88,7 @@ export const DonateBookList = (request, response, next) => {
     })
 }
 export const searchByAuther = (request, response, next) => {
-    console.log("search by author")
     Book.find({ author: request.body.author }).then(result => {
-        console.log(result);
         return response.status(200).json({ result: result, message: "list", status: true })
     }).catch(err => {
         console.log(err);
