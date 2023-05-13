@@ -5,12 +5,13 @@ export const saveOrder = (request, response, next) => {
     console.log(request.body)
     Order.create({
         userId: request.body.userId, cartId: request.body.cartId, billamount: request.body.billamount, contactPerson: request.body.contactPerson, contactNumber: request.body.contactNumber,date:request.body.date,
-        delieveryAddress: request.body.delieveryAddress, status: request.body.status, paymentMode: request.body.paymentMode, sellerId: request.body.sellerId,
-        orderItem: request.body.cartItems
+        delieveryAddress: request.body.delieveryAddress, status: request.body.status, paymentMode: request.body.paymentMode, 
+        orderItem: request.body.orderItem
     }).then((result) => {
-        Cart.findOne({ userId: request.body.userId }).then(result => {
-            console.log(result);
+        Cart.findOne({ userId: request.body.userId}).then(result => {
+           
             result.deleteOne().then(result => {
+                console.log(result);
                 return response.status(200).json({ message: "Order Placed SuccesFully", status: true });
             })
         }).catch(err => {
@@ -49,7 +50,7 @@ export const vieworderByorderId = (request, response, next) => {
         path:"orderItem",
         populate:{path:"bookId"}
     }).then((result) => {
-        console.log(result);
+       
         return response.status(200).json({ order: result, status: true });
     }).catch((err) => {
         return response.status(500).json({ err: "Internal Server Error", status: false });

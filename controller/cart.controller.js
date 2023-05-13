@@ -35,7 +35,7 @@ export const fetchCart = (request, response, next) => {
 
 
 export const removeBookInCart = async (request, response, next) => {
-   console.log(request.body);
+  
 try {
   let cart = await Cart.findOne({ userId: request.body.userId })
  
