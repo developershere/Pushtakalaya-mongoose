@@ -16,6 +16,7 @@ export const verifyEmail = async (request, response, next) => {
             return response.status(400).json({ Message: "User is already exists...", status: false });
         }
         const x = Math.floor((Math.random() * 9999) + 1000);
+        console.log(x);
         let data = await mail(request.body.email, "Email Verification from Pustakalaya", request.body.name, x);
         return true ? response.status(200).json({ result: { currentTime: new Date().getMinutes() + 5, OTP: x }, status: true }) : response.status(200).json({ Message: "Internal Server Error...", status: false });
     }
@@ -117,6 +118,7 @@ export const forgotPassword = async (request, response, next) => {
     }
 };
 export const checkUser = async (request, response, next) => {
+    
     try {
         console.log(request.body.email);
         const data = await User.findOne({ email: request.body.email });

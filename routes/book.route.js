@@ -24,7 +24,7 @@ router.get("/topBooks",TopBooks)
 router.get("/list",bookList);
 router.get("/totalbook",TotalBook)
 router.get("/freeBookList",DonateBookList);
-router.post('/deleteBook',removeBook);
+router.put('/removeBook/book/:id',removeBook);
 router.post('/searchbyAuthor',searchByAuther);
 router.post('/searchByCategoryId',searchByCategoryId)
 router.get("/searchByBookName/:name",searchByBookName);
