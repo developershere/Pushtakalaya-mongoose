@@ -9,10 +9,6 @@ const orderSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"user"
     },
-    sellerId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"user"
-    },
     billamount:{
         type:Number,
         required:true
@@ -23,7 +19,8 @@ const orderSchema = new mongoose.Schema({
     },
     contactNumber:{
         type:Number,
-        required:true
+        required:true,
+        trim:true
     },
     delieveryAddress:{
         type:String,
@@ -39,7 +36,7 @@ const orderSchema = new mongoose.Schema({
     },
     date:{
        type:String,
-       default: new Date().toString().substring(4,15).replaceAll(' ','-')
+   
     },
     orderItem:[
         {

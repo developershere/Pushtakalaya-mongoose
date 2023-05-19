@@ -1,13 +1,10 @@
-
 import { validationResult } from "express-validator";
 import { User } from "../model/user.model.js"
 import { Book } from "../model/book.model.js";
 import bcrypt from "bcryptjs"
 import { request, response } from "express";
 import jwt from "jsonwebtoken";
-import mail from "../service/email.js";
-import  env from 'dotenv';
-import { price } from "./book.controller.js";
+import env from "dotenv";
 env.config();
 export const verifyEmail = async (request, response, next) => {
     try {
@@ -19,7 +16,7 @@ export const verifyEmail = async (request, response, next) => {
         }
         const x = Math.floor((Math.random() * 9999) + 1000);
         let data = await mail(request.body.email, "Email Verification from Pustakalaya", request.body.name, x);
-        return true ?response.status(200).json({ result: { currentTime: new Date().getMinutes()+5, OTP: x }, status: true }): response.status(200).json({ Message: "Internal Server Error...", status: false });
+        return data ? response.status(200).json({ Message: "Internal Server Error...", status: false }):response.status(200).json({ result: { currentTime: new Date().getMinutes()+5, OTP: x }, status: true });
     }
     catch (err) {
         console.log(err);
@@ -34,7 +31,7 @@ export const signup = async (request, response, next) => {
         if (!errors.isEmpty())
             return response.status(400).json({ message: "bed request ", masseges: errors.array() })
         request.body.password = await bcrypt.hash(request.body.password, await bcrypt.genSalt(15));
-        const register = await User.create({name : request.body.name,email : request.body.email,contact : request.body.contact,password : request.body.password,photo : "Pustakalaya@"+request.file.filename,gender : "Male"});
+        const register = await User.create(request.body);
         return response.status(200).json({data : register, status : true});
     }
     catch (err) {
@@ -46,13 +43,13 @@ export const signup = async (request, response, next) => {
 
 export const signIn = async (request, response, next) => {
     try {
-  
+
         let user = await User.findOne({ email: request.body.email })
         let status = user ? bcrypt.compare(request.body.password, user.password) : response.status(404).json({ err: "unauthorized person" });
-        if(status){
-            let token=jwt.sign({email:user.email},process.env.KEY_SECRET);
-            return response.status(200).json({user:{...user.toObject(),password:undefined},msg:"SignIn Success",status:true,token:token});
-        } 
+        if (status) {
+            let token = jwt.sign({ email: user.email }, process.env.KEY_SECRET);
+            return response.status(200).json({ user: { ...user.toObject(), password: undefined }, msg: "SignIn Success", status: true, token: token });
+        }
         return response.status(404).json({ err: "unauthorized person" })
 
     } catch (err) {
@@ -83,13 +80,16 @@ export const userProfile = async (request, response, next) => {
     }
 }
 
-export const updateProfile = async (request,response,next)=>{
+export const updateProfile = async (req,response,next)=>{
+    console.log("xcvbn")
+  
    try{
-   const user = await User.findById(request.body._id);
+   const user = await User.findById(req.body._id);
    if (user) {
-       user.name = request.body.name || user.name;
-       user.email = request.body.email || user.email;
-       user.photo = "Pustakalaya@"+request.file.filename || user.photo;
+       user.name = req.body.name || user.name;
+       user.email = req.body.email || user.email;
+       user.photo = req.body.photo || user.photo;
+      
        const updatedUser = await user.save();
        return response.status(200).json({updatedUser:updatedUser,staus:true});
    }
@@ -117,9 +117,4 @@ export const forgotPassword = async (request, response, next) => {
         console.error(error);
         response.status(500).json({ message: 'Server error' });
     }
-}
-
-
-     
-
-
+};
