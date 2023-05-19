@@ -50,7 +50,7 @@ export const vieworderByorderId = (request, response, next) => {
         path:"orderItem",
         populate:{path:"bookId"}
     }).then((result) => {
-       
+        console.log(result);
         return response.status(200).json({ order: result, status: true });
     }).catch((err) => {
         return response.status(500).json({ err: "Internal Server Error", status: false });
