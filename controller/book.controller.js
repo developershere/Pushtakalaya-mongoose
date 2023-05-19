@@ -1,5 +1,6 @@
 import { request, response } from "express";
 import { Book } from "../model/book.model.js";
+import {User} from "../model/user.model.js"
 import { validationResult } from "express-validator";
 export const saveProduct = async (request, response, next) => {
     try {
@@ -63,7 +64,6 @@ export const bookList = (request, response, next) => {
 
 
 export const TotalBook = (request, response, next) => {
-   
     Book.find().then(result => {
         return response.status(200).json({ bookList: result, status: true });
     }).catch(err => {
@@ -206,3 +206,43 @@ export const price = async (request,response,next)=>{
       return response.status(500).json({ error: "Internal server error" });
   }
 }
+
+export const donetors = async (request, response, next) => {
+     try{
+    var  userAndBook = [];
+     var newData = {};
+    let books = await Book.find({ price: 0 });
+    const uniqueUserIds = {};
+    for (let book of books) {
+        uniqueUserIds[book.userId] = true;
+    }
+    const unique = Object.keys(uniqueUserIds);
+    for (let userId of unique) {
+        let freeBook = await Book.find({ $and: [{ userId: userId }, { price: 0 }] })
+          const donetors = await User.findOne({_id:userId});
+        newData = { user: donetors,books:freeBook.length};
+          userAndBook = [...userAndBook,newData]; 
+         }
+        console.log(userAndBook);
+        let sortedData = userAndBook.sort((a ,b )=>{
+            return b.books - a.books
+        })
+         sortedData = sortedData.slice(0, 3);
+         return response.status(200).json({ donetors: sortedData, message: "donetors" })
+     }
+     catch(err){
+        console.log(err)
+        return  response.status(200).json({error : "Internal server error"});
+     }
+   }
+
+
+
+
+ 
+
+
+
+
+
+

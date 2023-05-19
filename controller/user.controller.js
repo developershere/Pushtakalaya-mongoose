@@ -1,11 +1,13 @@
 
 import { validationResult } from "express-validator";
 import { User } from "../model/user.model.js"
+import { Book } from "../model/book.model.js";
 import bcrypt from "bcryptjs"
 import { request, response } from "express";
 import jwt from "jsonwebtoken";
 import mail from "../service/email.js";
 import  env from 'dotenv';
+import { price } from "./book.controller.js";
 env.config();
 export const verifyEmail = async (request, response, next) => {
     try {
@@ -115,4 +117,9 @@ export const forgotPassword = async (request, response, next) => {
         console.error(error);
         response.status(500).json({ message: 'Server error' });
     }
-};
+}
+
+
+     
+
+
