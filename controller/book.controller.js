@@ -3,7 +3,7 @@ import { Book } from "../model/book.model.js";
 import { validationResult } from "express-validator";
 export const saveProduct = async (request, response, next) => {
     try {
-        for (let book of request.body) {
+        for (let book of request.body.book) {
             await Book.create(book);
         }
         return response.status(200).json({ msg: "Add products Succesfully", status: true })
@@ -37,17 +37,14 @@ export const addBook = async (request, response, next) => {
     }
 }
 export const removeBook = async (request, response, next) => {
-    try {
-        let updateBook = await Book.findById(request.body.id)
-        if (updateBook) {
-            updateBook.status = request.body.status || ubook.status
-            const category = await ubook.save();
-            return response.status(200).json({ result: category, message: "Category update succesfully" })
-        }
-    } catch (err) {
+     
+    Book.findByIdAndRemove(request.body.BookId)
+    .then(result => {
+        return response.status(200).json({ message: "Book removed", status: true ,result});
+    }).catch(err => {
         console.log(err);
-        return response.status(500).json({ err: "Internal Server Error", status: false });
-    }
+        return response.status(500).json({ error: "Internal Server Error", status: false });
+  })
 }
 
 export const bookList = (request, response, next) => {
@@ -143,7 +140,7 @@ export const searchByKeyWord = async (request, response, next) => {
 }
 
 export const updateBook = async (request, response, next) => {
-         console.log("update");
+         console.log(request.body);
     try {
         let ubook = await Book.findById(request.body.id)
         if (ubook) {
@@ -165,6 +162,7 @@ export const updateBook = async (request, response, next) => {
 
         }
         const updated = await ubook.save()
+        console.log(updated)
         return response.status(200).json({ result: updated, message: "book update succesfully",status:true })
     }
     catch (err) {
