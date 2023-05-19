@@ -37,21 +37,37 @@ export const addBook = async (request, response, next) => {
     }
 }
 export const removeBook = async (request, response, next) => {
-     
-    Book.findByIdAndRemove(request.body.BookId)
-    .then(result => {
-        return response.status(200).json({ message: "Book removed", status: true ,result});
-    }).catch(err => {
-        console.log(err);
-        return response.status(500).json({ error: "Internal Server Error", status: false });
-  })
+    console.log("cvbnm")
+  
+    try {
+        let book = await Book.findById({_id:request.params.id})
+        console.log(book)
+        if (!book)
+            return response.status(401).json({ message: "Book ID nor found" })
+        if (book.status ==false)
+            return response.status(200).json({ status: "Book is already Deleted" })
+        book = await Book.findByIdAndUpdate(
+            request.params.id,
+            {
+                status: false
+            }, { new: true }
+        )
+        console.log(book)
+        return response.status(200).json({ Book: book, status: true })
+    }
+    catch (err) {
+        console.log(err)
+        return response.status(500).json({ error: "Internal Server Error" })
+
+ }
 }
 
 export const bookList = (request, response, next) => {
-    console.log("sfgsd");
+ 
     let page = parseInt(request.query.page) || 1;
     let perPage = 10;
     Book.find().skip((page-1) * 10).limit(10).then(result => {
+        console.log(result);
         return response.status(200).json({ bookList: result, status: true });
     }).catch(err => {
         return response.status(500).json({ Message: "Internal server error...", status: false });
@@ -61,10 +77,10 @@ export const bookList = (request, response, next) => {
 
 
 export const TotalBook = (request, response, next) => {
-    let page = parseInt(request.query.page)|| 1;
-    console.log("Page : "+page);
-    let perPageData = 10;
-    Book.find().skip((page-1)*10).limit(10).then(result => {
+    // let page = parseInt(request.query.page)|| 1;
+    // console.log("Page : "+page);
+    // let perPageData = 10;
+    Book.find().then(result => {
         return response.status(200).json({ bookList: result, status: true });
     }).catch(err => {
         return response.status(500).json({ Message: "Internal server error...", status: false });

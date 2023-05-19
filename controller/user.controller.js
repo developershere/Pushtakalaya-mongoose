@@ -118,6 +118,7 @@ export const forgotPassword = async (request, response, next) => {
     }
 };
 export const checkUser = async (request, response, next) => {
+    
     try {
         console.log(request.body.email);
         const data = await User.findOne({ email: request.body.email });
