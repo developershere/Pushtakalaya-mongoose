@@ -118,3 +118,35 @@ export const forgotPassword = async (request, response, next) => {
         response.status(500).json({ message: 'Server error' });
     }
 };
+
+export const checkUser = async (request, response, next) => {
+   try {
+        console.log(request.body.email);
+        const data = await User.findOne({ email: request.body.email });
+        const OTP = await generateOTP();
+        console.log(OTP);
+        let email = await mail(request.body.email, "Forgott Password change related", data?.name, OTP);
+        if (email)
+            return response.status(200).json({ user: data, otp: OTP, status: true });
+        return response.status(400).json({ Message: "User is unauthorized", status: false });
+    }
+    catch (err) {
+        console.log(err);
+        return response.status(500). json({ message: 'Internal server error...', status: false });
+    }
+}
+export const updatePassword = async (request, response, next) => {
+    try {
+        console.log(request.body);
+        request.body.password = await bcrypt.hash(request.body.password, await bcrypt.genSalt(15));
+        const user = await User.findOneAndUpdate({ email: request.body.email }, { password: request.body.password });
+        console.log(user);
+        if (user?.status)
+            return response.status(200).json({ Message: 'Password Updated success', status: true });
+        return response.status(400).json({ Message: 'Unauthorized User...', status: false });
+    }
+    catch (err) {
+        console.log(err);
+        return response.status(500).json({ Message: 'Internal Server Error...', status: false });
+    }
+}
