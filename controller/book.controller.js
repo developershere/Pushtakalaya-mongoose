@@ -77,9 +77,9 @@ export const bookList = (request, response, next) => {
 
 
 export const TotalBook = (request, response, next) => {
-    // let page = parseInt(request.query.page)|| 1;
-    // console.log("Page : "+page);
-    // let perPageData = 10;
+    let page = parseInt(request.query.page)|| 1;
+    console.log("Page : "+page);
+    let perPageData = 10;
     Book.find().then(result => {
         return response.status(200).json({ bookList: result, status: true });
     }).catch(err => {
