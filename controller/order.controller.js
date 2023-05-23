@@ -2,6 +2,7 @@ import { request, response } from "express";
 import { Cart } from "../model/cart.model.js";
 import { Order } from "../model/order.model.js";
 export const saveOrder = (request, response, next) => {
+    console.log('Order save called....');
     console.log(request.body);
     Order.create({
         userId: request.body.userId, cartId: request.body.cartId, billamount: request.body.billamount, contactPerson: request.body.contactPerson, contactNumber: request.body.contactNumber,date:request.body.date,
@@ -12,7 +13,7 @@ export const saveOrder = (request, response, next) => {
            
             result.deleteOne().then(result => {
                 console.log(result);
-                return response.status(200).json({ message: "Order Placed SuccesFully", status: true });
+                return response.status(200).json({ orderId : result._id,message: "Order Placed SuccesFully", status: true });
             })
         }).catch(err => {
             console.log(err)
