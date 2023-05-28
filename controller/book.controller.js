@@ -1,5 +1,6 @@
 import { request, response } from "express";
 import { Book } from "../model/book.model.js";
+import {User} from "../model/user.model.js"
 import { validationResult } from "express-validator";
 export const saveProduct = async (request, response, next) => {
     try {
@@ -78,9 +79,8 @@ export const bookList = (request, response, next) => {
 
 export const TotalBook = (request, response, next) => {
     let page = parseInt(request.query.page)|| 1;
-    console.log("Page : "+page);
     let perPageData = 10;
-    Book.find().then(result => {
+    Book.find().skip((page-1)*10).limit(10).then(result => {
         return response.status(200).json({ bookList: result, status: true });
     }).catch(err => {
         return response.status(500).json({ Message: "Internal server error...", status: false });
@@ -162,6 +162,8 @@ export const updateBook = async (request, response, next) => {
     try {
         let ubook = await Book.findById(request.body.id)
         if (ubook) {
+            console.log(request.file);
+            console.log(request.body);
 
             ubook.name = request.body.name.trim() || ubook.name,
             ubook.price = request.body.price || ubook.price,
@@ -177,7 +179,7 @@ export const updateBook = async (request, response, next) => {
             ubook.status = request.body.status || ubook.status,
             ubook.userId = request.body.userId || ubook.userId,
             ubook.permission= request.body.permission || ubook.permission;
-
+            ubook.photos  = "Pustakalaya@" + request.file.filename || ubook.photos;
         }
         const updated = await ubook.save()
         console.log(updated)
@@ -220,3 +222,43 @@ export const price = async (request,response,next)=>{
       return response.status(500).json({ error: "Internal server error" });
   }
 }
+
+export const donetors = async (request, response, next) => {
+     try{
+    var  userAndBook = [];
+     var newData = {};
+    let books = await Book.find({ price: 0 });
+    const uniqueUserIds = {};
+    for (let book of books) {
+        uniqueUserIds[book.userId] = true;
+    }
+    const unique = Object.keys(uniqueUserIds);
+    for (let userId of unique) {
+        let freeBook = await Book.find({ $and: [{ userId: userId }, { price: 0 }] })
+          const donetors = await User.findOne({_id:userId});
+        newData = { user: donetors,books:freeBook.length};
+          userAndBook = [...userAndBook,newData]; 
+         }
+        console.log(userAndBook);
+        let sortedData = userAndBook.sort((a ,b )=>{
+            return b.books - a.books
+        })
+         sortedData = sortedData.slice(0, 3);
+         return response.status(200).json({ donetors: sortedData, message: "donetors" })
+     }
+     catch(err){
+        console.log(err)
+        return  response.status(200).json({error : "Internal server error"});
+     }
+   }
+
+
+
+
+ 
+
+
+
+
+
+

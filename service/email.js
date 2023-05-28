@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 import env from "dotenv"
 env.config();
-function email(email,subject,name,otp){
+function email(email,subject,textMessage,name,otp){
     var transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       service: 'gmail',
@@ -16,7 +16,7 @@ function email(email,subject,name,otp){
       from: process.env.MAIL_SEND_EMAIL,
       to: email,
       subject: subject,
-      text:" Welcome "+name +" in a pustakalay application hope you enjoying our services\nThis is your otp number "+otp
+      text:textMessage
     };
     transporter.sendMail(mailOptions, function (error, info){
         error ? console.log(error):response.send("Email has been sent to the user")
