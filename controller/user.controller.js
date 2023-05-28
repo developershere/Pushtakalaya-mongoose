@@ -86,11 +86,13 @@ export const userProfile = async (request, response, next) => {
 
 export const updateProfile = async (req,response,next)=>{
    try{
+    console.log('update...');
    const user = await User.findById(req.body._id);
+   console.log(req.file.filename);
    if (user) {
        user.name = req.body.name || user.name;
-       user.email = req.body.email || user.email;
-       user.photo = req.body.photo || user.photo;
+       user.contact = req.body.contact || user.contact;
+       user.photo = "Pustakalaya@"+req.file.filename || user.photo;
       
        const updatedUser = await user.save();
        return response.status(200).json({updatedUser:updatedUser,staus:true});
