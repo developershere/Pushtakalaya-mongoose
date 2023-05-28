@@ -2,7 +2,8 @@ import { request, response } from "express";
 import { Cart } from "../model/cart.model.js";
 import { Order } from "../model/order.model.js";
 export const saveOrder = (request, response, next) => {
-    console.log(request.body)
+    console.log('Order save called....');
+    console.log(request.body);
     Order.create({
         userId: request.body.userId, cartId: request.body.cartId, billamount: request.body.billamount, contactPerson: request.body.contactPerson, contactNumber: request.body.contactNumber,date:request.body.date,
         delieveryAddress: request.body.delieveryAddress, status: request.body.status, paymentMode: request.body.paymentMode, 
@@ -12,7 +13,7 @@ export const saveOrder = (request, response, next) => {
            
             result.deleteOne().then(result => {
                 console.log(result);
-                return response.status(200).json({ message: "Order Placed SuccesFully", status: true });
+                return response.status(200).json({ orderId : result._id,message: "Order Placed SuccesFully", status: true });
             })
         }).catch(err => {
             console.log(err)
@@ -50,7 +51,7 @@ export const vieworderByorderId = (request, response, next) => {
         path:"orderItem",
         populate:{path:"bookId"}
     }).then((result) => {
-       
+        console.log(result);
         return response.status(200).json({ order: result, status: true });
     }).catch((err) => {
         return response.status(500).json({ err: "Internal Server Error", status: false });
@@ -59,13 +60,28 @@ export const vieworderByorderId = (request, response, next) => {
 
 
 export const changestatus = async (request, response, next) => {
-    try {
-        await Order.findOneAndUpdate({ _id: request.body.id }, { $set: { status: request.body.status }, }, { new: true }) ? response.status(202).json({ msg: "Status Update Succesfully", status: true }) :
-            response.status(404).json({ err: "Request Resouce Not Found", status: false });
-    } catch (err) {
-        return response.status(500).json({ err: "Internal Server Error", status: false });
-    }
+   
 
+    try {
+        let order = await Order.findById(request.params.orderId)
+        console.log(order);
+        if (!order)
+            return response.status(401).json({ message: "Order ID nor found" })
+        if (order.status == "shipped")
+            return response.status(200).json({ status: "Order has already shipped" })
+        order = await Order.findByIdAndUpdate(
+            request.params.orderId,
+            {
+                status: "shipped"
+            }, { new: true }
+        )
+        return response.status(200).json({ Order: order, status: true })
+    }
+    catch (err) {
+        console.log(err)
+        return response.status(500).json({ error: "Internal Server Error" })
+
+ }
 }
 
 
