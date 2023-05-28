@@ -33,8 +33,8 @@ export const signup = async (request, response, next) => {
         if (!errors.isEmpty())
             return response.status(400).json({ message: "bed request ", masseges: errors.array() })
         request.body.password = await bcrypt.hash(request.body.password, await bcrypt.genSalt(15));
-        const register = await User.create(request.body);
-        return response.status(200).json({data : register, status : true});
+        const register = await User.create({ name: request.body.name, email: request.body.email, contact: request.body.contact, password: request.body.password, photo: "Pustakalaya@" + request.file.filename, gender: "Male" });
+        return response.status(200).json({ data: register, status: true });
     }
     catch (err) {
         console.log(err);
