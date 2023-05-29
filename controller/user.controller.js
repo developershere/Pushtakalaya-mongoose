@@ -81,8 +81,6 @@ export const userProfile = async (request, response, next) => {
 }
 
 export const updateProfile = async (req,response,next)=>{
-    console.log("xcvbn")
-  
    try{
    const user = await User.findById(req.body._id);
    if (user) {
