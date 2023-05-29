@@ -2,13 +2,12 @@ import { City } from "../model/city.model.js";
 
 export const addCity = (request, response, next) => {
   City.create({ stateId: request.body.id, name: request.body.name }).then(result => {
-    return response.status(200).json({ msg: "City Added SuccesFully", status: true });
+   return response.status(200).json({ msg: "City Added SuccesFully", status: true });
   }).catch(err => {
     console.log(err);
     return response.status(500).json({ msg: "Internal Server Error", status: false });
   })
 }
-
 export const cityList = (request, response, next) => {
   City.find().then(result => {
     return response.status(200).json({ state: result, msg: "State List", status: true });
@@ -16,10 +15,6 @@ export const cityList = (request, response, next) => {
     return response.status(500).json({ err: "Internal Server Error", status: false })
   })
 }
-
-
-
-
 export const findCityByState = async (request, response, next) => {
   try {
     console.log("CIties called...")
@@ -71,5 +66,18 @@ export  const cityData = (request,response,next)=>{
   }).catch(err=>{
     response.status(500).json({Message : "Internal Server error....",status :true})
 });
+}
+
+export const addCitys = async (request, response, next) => {
+   try {
+    for (let cities of request.body.cities) {
+     await City.create({name : cities.name , stateId : cities.stateId});
+    }
+    return response.status(200).json({ msg: "Add city Succesfully", status: true });
+
+  } catch (err) {
+    console.log(err);
+    return response.status(500).json({ msg: "Internal Server Error", status: false });
+  }
 }
 
