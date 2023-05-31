@@ -7,6 +7,7 @@ export const AdminverifyToken=(request,response,next)=>{
      if(!token)
        throw new console.error();
        jwt.verify(token,'aqwertylkjhgfdsdfghj');
+     
        next();
     }catch(err){
         return response.status(401).json({err:"unautorized request",status:false});
