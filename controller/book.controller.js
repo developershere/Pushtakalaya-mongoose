@@ -15,7 +15,7 @@ export const saveProduct = async (request, response, next) => {
 }
 export const addBook = async (request, response, next) => {
     try {
- 
+          console.log(request.file);
         let name = request.body.name;
         let description = request.body.description;
         let author = request.body.author;
@@ -142,7 +142,7 @@ export const searchByKeyWord = async (request, response, next) => {
         
         let searchResult = await Book.find({
             $or: [{ name: { $regex: request.body.keyword, $options: "i" } },
-            { description: { $regex: request.body.keyword, $options: "i" } },
+            { description: { $reg ex: request.body.keyword, $options: "i" } },
             { author: { $regex: request.body.keyword, $options: "i" } }
             ]
         })
