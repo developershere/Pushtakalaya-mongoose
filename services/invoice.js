@@ -7,10 +7,10 @@ export const invoice = async (request, response, next) => {
         const user = request.body.user;
         const mausam=[1,2,3];
         
-        const newData = Cart.aggregate([
-            {$match:{_id:request.body.user._id}},
-            {$group:{}}
-        ])
+        // const newData = Cart.aggregate([
+        //     {$match:{_id:request.body.user._id}},
+        //     {$group:{}}
+        // ])
         const product = [
             {
                 "quantity": "1",
@@ -25,12 +25,12 @@ export const invoice = async (request, response, next) => {
                 "price": 90
             }
         ]
-        mausam.map((book,index)=>newData.push({
-            quantity: "1",
-            description: book.title,
-            tax: "6",
-            price: book.price
-        }))
+        // mausam.map((book,index)=>newData.push({
+        //     quantity: "1",
+        //     description: book.title,
+        //     tax: "6",
+        //     price: book.price
+        // }))
         var data = {
             "documentTitle": "Order Invoice", //Defaults to INVOICE
             "currency": "INR",
@@ -39,9 +39,8 @@ export const invoice = async (request, response, next) => {
             "marginRight": 25,
             "marginLeft": 25,
             "marginBottom": 25,
-            "logo": "Pustakalaya.png", //or base64
+            "logo": "https://www.easyinvoice.cloud/img/logo.png", //or base64
             //"logoExtension": "png", //only when logo is base64
-            // images:{logo:'./4885202.jpg'},
             "sender": {
                 "company": "Pustakalaya",
                 "address": "Madhovastika rajmohalla chowk Indore (M.P) ",
@@ -53,8 +52,8 @@ export const invoice = async (request, response, next) => {
                 //"custom3": "custom value 3"
             },
             "client": {
-                "company": "Sanju Patel",
-                "address": "Annapurna Temple Indore",
+                "company": user,
+                "address": user,
                 "zip": "470005",
                 "city": "Indore",
                 "country": "India"
@@ -62,16 +61,28 @@ export const invoice = async (request, response, next) => {
                 //"custom2": "custom value 2",
                 //"custom3": "custom value 3"
             },
-            "invoiceNumber": "2020.0001",
             "invoiceDate": "05-01-2020",
-            "products": newData,
+            "products": [
+                {
+                    "quantity": "1",
+                    "description": "IT Book (Second Hand)",
+                    
+                    "price": 120
+                },
+                {
+                    "quantity": "01",
+                    "description": "The girl in room 105",
+                    
+                    "price": 90
+                }
+            ],
             "bottomNotice": "Please Visit again !!!"
         };
         easyinvoice.createInvoice(data, function (result) {
-            fs.writeFileSync("invoice.pdf", result.pdf, 'base64');
+            fs.writeFileSync("./Invoices/invoice.pdf", result.pdf, 'base64');
         });
     }
     catch (err) {
-
+        console.log(err);
     }
 }
