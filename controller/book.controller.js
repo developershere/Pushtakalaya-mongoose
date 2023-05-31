@@ -239,7 +239,7 @@ export const donetors = async (request, response, next) => {
         newData = { user: donetors,books:freeBook.length};
           userAndBook = [...userAndBook,newData]; 
          }
-        console.log(userAndBook);
+        
         let sortedData = userAndBook.sort((a ,b )=>{
             return b.books - a.books
         })
