@@ -170,7 +170,7 @@ export const searchByKeyWord = async (request, response, next) => {
         
         let searchResult = await Book.find({
             $or: [{ name: { $regex: request.body.keyword, $options: "i" } },
-            { description: { $reg ex: request.body.keyword, $options: "i" } },
+            { description: { $regex: request.body.keyword, $options: "i" } },
             { author: { $regex: request.body.keyword, $options: "i" } }
             ]
         })
