@@ -5,6 +5,10 @@ import { fileURLToPath } from 'url';
 export const PDF = async (request, response, next) => {
     try {
         console.log("Mausam.....");
+        console.log(request.body.books);
+        console.log(request.body.user);
+        const userDetails = request.body.user;
+        const books = request.body.books;
         const __dirname = path.dirname(fileURLToPath(import.meta.url));
         var html = fs.readFileSync(path.join(__dirname,'./invoice.html',),"utf-8");
         var options = {
@@ -29,7 +33,8 @@ export const PDF = async (request, response, next) => {
         var document = {
             html: html,
             data: {
-                users: users
+                user : userDetails,
+                books : books
             },
             path: './Invoices/creator.pdf',
             type: ""

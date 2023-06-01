@@ -10,8 +10,7 @@ export const saveOrder = (request, response, next) => {
         orderItem: request.body.orderItem
     }).then((result) => {
         Cart.findOne({ userId: request.body.userId}).then(result => {
-           
-            result.deleteOne().then(result => {
+            result?.deleteOne().then(result => {
                 console.log(result);
                 return response.status(200).json({ orderId : result._id,message: "Order Placed SuccesFully", status: true });
             })
