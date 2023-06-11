@@ -9,12 +9,14 @@ export const saveOrder = (request, response, next) => {
         delieveryAddress: request.body.delieveryAddress, status: request.body.status, paymentMode: request.body.paymentMode, 
         orderItem: request.body.orderItem
     }).then((result) => {
-        Cart.findOne({ userId: request.body.userId}).then(result => {
-           
-            result.deleteOne().then(result => {
-                console.log(result);
+        Cart.findOne({ userId: request.body.userId}).then(orderResult => {
+            console.log("Inside then...");
+            orderResult.deleteOne().then(deleteResult => {
+                console.log(deleteResult);
                 return response.status(200).json({ orderId : result._id,message: "Order Placed SuccesFully", status: true });
-            })
+            });
+            console.log("Out side if....");
+           return response.status(200).json({ orderId : result._id,message: "Order Placed SuccesFully", status: true });
         }).catch(err => {
             console.log(err)
             return response.status(500).json({ msg: "Internal Server Error", status: false })
@@ -60,8 +62,6 @@ export const vieworderByorderId = (request, response, next) => {
 
 
 export const changestatus = async (request, response, next) => {
-   
-
     try {
         let order = await Order.findById(request.params.orderId)
         console.log(order);
@@ -80,11 +80,8 @@ export const changestatus = async (request, response, next) => {
     catch (err) {
         console.log(err)
         return response.status(500).json({ error: "Internal Server Error" })
-
  }
 }
-
-
 export const viewOrderBySellerId = (request, response, next) => {
     Order.find({ sellerId: request.body.sellerId }).then((result) => {
         return response.status(200).json({ result: result, status: true });

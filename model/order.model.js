@@ -31,7 +31,7 @@ const orderSchema = new mongoose.Schema({
         default:"pending"
     },
     paymentMode:{
-        type:String,
+        type:Number,
         default:"Cash On Delievery"
     },
     date:{

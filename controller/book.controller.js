@@ -15,7 +15,7 @@ export const saveProduct = async (request, response, next) => {
 }
 export const addBook = async (request, response, next) => {
     try {
- 
+          console.log(request.file);
         let name = request.body.name;
         let description = request.body.description;
         let author = request.body.author;
@@ -44,7 +44,7 @@ export const removeBook = async (request, response, next) => {
         let book = await Book.findById({_id:request.params.id})
         console.log(book)
         if (!book)
-            return response.status(401).json({ message: "Book ID nor found" })
+            return response.status(401).json({ message: "Book ID not found" })
         if (book.status ==false)
             return response.status(200).json({ status: "Book is already Deleted" })
         book = await Book.findByIdAndUpdate(
@@ -63,11 +63,39 @@ export const removeBook = async (request, response, next) => {
  }
 }
 
+export const permissionAllowed = async (request, response, next) => {
+    console.log("permission allowed")
+  
+    try {
+        let book = await Book.findById({_id:request.params.id})
+        console.log(book)
+        if (!book)
+            return response.status(401).json({ message: "Book ID not found" })
+        if (book.permission ==true)
+            return response.status(200).json({ status: "Book is already Allowed" })
+        book = await Book.findByIdAndUpdate(
+            request.params.id,
+            {
+                permission: true
+            }, { new: true }
+        )
+        console.log(book)
+        return response.status(200).json({ Book: book, status: true })
+    }
+    catch (err) {
+        console.log(err)
+        return response.status(500).json({ error: "Internal Server Error" })
+
+ }
+}
+
 export const bookList = (request, response, next) => {
  
-    let page = parseInt(request.query.page) || 1;
-    let perPage = 10;
-    Book.find().skip((page-1) * 10).limit(10).then(result => {
+    // let page = parseInt(request.query.page) || 1;
+    // let perPage = 10;
+    Book.find()
+    // .skip((page-1) * 10).limit(10)
+    .then(result => {
         console.log(result);
         return response.status(200).json({ bookList: result, status: true });
     }).catch(err => {
@@ -158,6 +186,7 @@ export const searchByKeyWord = async (request, response, next) => {
 }
 
 export const updateBook = async (request, response, next) => {
+    console.log("zxcvbnm");
          console.log(request.body);
     try {
         let ubook = await Book.findById(request.body.id)
@@ -182,7 +211,7 @@ export const updateBook = async (request, response, next) => {
             ubook.photos  = "Pustakalaya@" + request.file.filename || ubook.photos;
         }
         const updated = await ubook.save()
-        console.log(updated)
+       
         return response.status(200).json({ result: updated, message: "book update succesfully",status:true })
     }
     catch (err) {
@@ -239,7 +268,7 @@ export const donetors = async (request, response, next) => {
         newData = { user: donetors,books:freeBook.length};
           userAndBook = [...userAndBook,newData]; 
          }
-        console.log(userAndBook);
+        
         let sortedData = userAndBook.sort((a ,b )=>{
             return b.books - a.books
         })
