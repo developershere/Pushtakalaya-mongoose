@@ -11,7 +11,6 @@ import OrderRoute from "./routes/order.route.js"
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import Razorpay from "razorpay";
 import { fileURLToPath } from "url";
 import path from "path";
 dotenv.config();
@@ -31,10 +30,6 @@ app.use("/category",CategoryRoute);
 app.use("/admin",AdminRouter)
 app.use("/cart",CartRouter);
 app.use("/order",OrderRoute);
-export const instance = new Razorpay({
-    key_id: process.env.key_id,
- 
-})
 app.listen(process.env.PORT,()=>{
     console.log("Server Started");
 })
