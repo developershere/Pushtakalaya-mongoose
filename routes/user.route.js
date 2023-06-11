@@ -6,16 +6,14 @@ import { invoice } from "../services/invoice.js";
 import { PDF } from "../services/nodeInvoice.js";
 const upload = multer({dest:"public/images"});
 const router=express.Router();
-
-router.post("/signIn",signIn)
+router.post("/signIn",signIn);
 router.post("/signup",upload.single("profile"),signup);
 router.get("/userList",allUserList)
-router.post("/viewprofile" , userProfile );
+router.post("/viewprofile" ,userProfile );
 router.post("/updateProfile",upload.single("profile"),updateProfile);
 router.post("/verifyEmail",verifyEmail);
 router.post('/forgot-password',forgotPassword);
- router.post('/forgettpassword', updatePassword);
+router.post('/forgettpassword', updatePassword);
 router.post('/checkuser',checkUser);
 router.post('/invoice',PDF);
 export default router;
-

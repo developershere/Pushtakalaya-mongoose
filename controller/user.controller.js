@@ -41,17 +41,14 @@ export const signup = async (request, response, next) => {
         return response.status(500).json({ message: "Internal server Error", status: false });
     }
 }
-
-
 export const signIn = async (request, response, next) => {
     try {
-
-        let user = await User.findOne({ email: request.body.email })
-        console.log(request.body.password)
+        console.log("SignIn called...");
+        let user = await User.findOne({ email: request.body.email });
         // let status = user?.email ? await bcrypt.compare(request.body.password, user.password) : false;
         // console.log(status)
         if (true) {
-            let token = jwt.sign({ email: user.email }, process.env.KEY_SECRET);
+            let token = jwt.sign({ email: user.email,password:user.password,name:user.name}, process.env.KEY_SECRET);
             return response.status(200).json({ user: { ...user.toObject(), password: null }, msg: "SignIn Success", status: true, token: token });
         }
         return response.status(404).json({ err: "unauthorized person" })
@@ -61,9 +58,6 @@ export const signIn = async (request, response, next) => {
         return response.status(200).json({ err: "Internal Server Error", status: false });
     }
 }
-
-
-
 export const allUserList = (request, response, next) => {
     User.find().then(result => {
         return response.status(200).json({ msg: "All User List", user: result, status: true });
@@ -71,8 +65,6 @@ export const allUserList = (request, response, next) => {
         return response.status(500).json({ err: "Internal Server Error", status: false });
     })
 }
-
-
 export const userProfile = async (request, response, next) => {
     try {
         let user = await User.findById(request.body.id);
@@ -83,7 +75,6 @@ export const userProfile = async (request, response, next) => {
         return response.status(500).json({ Message: "Internal Server Error...", status: false });
     }
 }
-
 export const updateProfile = async (req,response,next)=>{
    try{
     console.log('update...');
@@ -103,8 +94,6 @@ export const updateProfile = async (req,response,next)=>{
     return response.status(500).json({error : "Internal server error"});
   }
 }
-
-
 export const forgotPassword = async (request, response, next) => {
     try {
         const { email } = request.body;
@@ -122,7 +111,6 @@ export const forgotPassword = async (request, response, next) => {
         response.status(500).json({ message: 'Server error' });
     }
 };
-
 export const checkUser = async (request, response, next) => {
     try {
         console.log(request.body.email);

@@ -4,7 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 export const PDF = async (request, response, next) => {
     try {
-        console.log("Mausam.....");
+        console.log("Inside PDF.....");
         console.log(request.body.books);
         console.log(request.body.user);
         const userDetails = request.body.user;
