@@ -3,7 +3,6 @@
 // import {Cart} from '../model/cart.model.js'
 // export const invoice = async (request, response, next) => {
 //     try {
-//         console.log(request.body);
 //         const user = request.body.user;
 //         const mausam=[1,2,3];
         
@@ -83,6 +82,5 @@
 //         });
 //     }
 //     catch (err) {
-//         console.log(err);
 //     }
 // }

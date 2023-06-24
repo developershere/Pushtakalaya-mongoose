@@ -15,7 +15,7 @@ import { fileURLToPath } from "url";
 import path from "path";
 dotenv.config();
 const app = express();
-mongoose.connect(process.env.MONGO_URL).then(()=>console.log("Database connected..."));
+mongoose.connect(process.env.MONGO_URL).then();
 app.use(bodyParser.json()); 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.use(express.static(path.join(__dirname,"public")));
@@ -31,5 +31,4 @@ app.use("/admin",AdminRouter)
 app.use("/cart",CartRouter);
 app.use("/order",OrderRoute);
 app.listen(process.env.PORT,()=>{
-    console.log("Server Started");
 })

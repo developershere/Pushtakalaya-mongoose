@@ -9,26 +9,20 @@ import mail from '../services/email.js';
 env.config();
 export const verifyEmail = async (request, response, next) => {
     try {
-        console.log("fgsdgs");
-        console.log(request.body.email);
         const flag = await User.findOne({ email: request.body.email });
         if (flag) {
             return response.status(400).json({ Message: "User is already exists...", status: false });
         }
         const x = Math.floor((Math.random() * 9999) + 1000);
-        console.log(x);
         let data = await mail(request.body.email, "Email Verification from Pustakalaya", " Welcome "+request.body.name +" in a pustakalay application hope you enjoying our services\nThis is your otp number "+x,request.body.name, x);
         return data ? response.status(200).json({ Message: "Internal Server Error...", status: false }):response.status(200).json({ result: { currentTime: new Date().getMinutes()+5, OTP: x }, status: true });
     }
     catch (err) {
-        console.log(err);
         return response.status(500).json({ Message: "Internal Server Error...", status: false });
     }
 }
 export const signup = async (request, response, next) => {
     try {
-        console.log("Signup called....");
-        console.log(request.file.filename);
         const errors = await validationResult(request);
         if (!errors.isEmpty())
             return response.status(400).json({ message: "bed request ", masseges: errors.array() })
@@ -37,16 +31,13 @@ export const signup = async (request, response, next) => {
         return response.status(200).json({ data: register, status: true });
     }
     catch (err) {
-        console.log(err);
         return response.status(500).json({ message: "Internal server Error", status: false });
     }
 }
 export const signIn = async (request, response, next) => {
     try {
-        console.log("SignIn called...");
         let user = await User.findOne({ email: request.body.email });
-        // let status = user?.email ? await bcrypt.compare(request.body.password, user.password) : false;
-        // console.log(status)
+        let status = user?.email ? await bcrypt.compare(request.body.password, user.password) : false;
         if (true) {
             let token = jwt.sign({ email: user.email,password:user.password,name:user.name}, process.env.KEY_SECRET);
             return response.status(200).json({ user: { ...user.toObject(), password: null }, msg: "SignIn Success", status: true, token: token });
@@ -54,7 +45,6 @@ export const signIn = async (request, response, next) => {
         return response.status(404).json({ err: "unauthorized person" })
 
     } catch (err) {
-        console.log(err);
         return response.status(200).json({ err: "Internal Server Error", status: false });
     }
 }
@@ -71,15 +61,12 @@ export const userProfile = async (request, response, next) => {
         user ? response.status(200).json({ Details: { ...user.toObject(), password: undefined }, status: true }) : response.status(400).json({ Message: "Bad request", status: false });
     }
     catch (err) {
-        console.log(err);
         return response.status(500).json({ Message: "Internal Server Error...", status: false });
     }
 }
 export const updateProfile = async (req,response,next)=>{
    try{
-    console.log('update...');
    const user = await User.findById(req.body._id);
-   console.log(req.file.filename);
    if (user) {
        user.name = req.body.name || user.name;
        user.contact = req.body.contact || user.contact;
@@ -90,7 +77,6 @@ export const updateProfile = async (req,response,next)=>{
    }
 }
    catch(err){
-       console.log(err);
     return response.status(500).json({error : "Internal server error"});
   }
 }
@@ -113,7 +99,6 @@ export const forgotPassword = async (request, response, next) => {
 };
 export const checkUser = async (request, response, next) => {
     try {
-        console.log(request.body.email);
         function generateOTP() {
             var digits = "0123456789";
             let OTP = "";
@@ -123,32 +108,25 @@ export const checkUser = async (request, response, next) => {
             return OTP;
         };
         const data = await User.findOne({ email: request.body.email });
-        console.log(data);
         const OTP = await generateOTP();
-        console.log(OTP);
         let email = mail(request.body.email, "Forgott Password change related", data?.name, OTP);
-        console.log(email);
         if (!email)
             return response.status(200).json({ user: data, otp: OTP, status: true });
         return response.status(400).json({ Message: "User is unauthorized", status: false });
     }
     catch (err) {
-        console.log(err);
         return response.status(500). json({ message: 'Internal server error...', status: false });
     }
 }
 export const updatePassword = async (request, response, next) => {
     try {
-        console.log(request.body);
         request.body.password = await bcrypt.hash(request.body.password, await bcrypt.genSalt(15));
         const user = await User.findOneAndUpdate({ email: request.body.email }, { password: request.body.password });
-        console.log(user);
         if (user?.status)
             return response.status(200).json({ Message: 'Password Updated success', status: true });
         return response.status(400).json({ Message: 'Unauthorized User...', status: false });
     }
     catch (err) {
-        console.log(err);
         return response.status(500).json({ Message: 'Internal Server Error...', status: false });
     }
 }

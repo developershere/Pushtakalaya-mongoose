@@ -8,7 +8,6 @@ export default userVerifyToken = (request,response,next)=>{
         throw new console.error(); 
      Jwt.verify(token,'zxcvbnmasdfghjkl');
      const encoded= jwt.decode(token);
-     console.log(encoded);
     }catch(err){
         return response.status(401).json({err:"unautorized request",status:false});
     }

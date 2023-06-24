@@ -2,28 +2,21 @@ import { request, response } from "express";
 import { Cart } from "../model/cart.model.js";
 import { Order } from "../model/order.model.js";
 export const saveOrder = (request, response, next) => {
-    console.log('Order save called....');
-    console.log(request.body);
     Order.create({
         userId: request.body.userId, cartId: request.body.cartId, billamount: request.body.billamount, contactPerson: request.body.contactPerson, contactNumber: request.body.contactNumber,date:request.body.date,
         delieveryAddress: request.body.delieveryAddress, status: request.body.status, paymentMode: request.body.paymentMode, 
         orderItem: request.body.orderItem
     }).then((result) => {
         Cart.findOne({ userId: request.body.userId}).then(orderResult => {
-            console.log("Inside then...");
             orderResult.deleteOne().then(deleteResult => {
-                console.log(deleteResult);
                 return response.status(200).json({ orderId : result._id,message: "Order Placed SuccesFully", status: true });
             });
-            console.log("Out side if....");
            return response.status(200).json({ orderId : result._id,message: "Order Placed SuccesFully", status: true });
         }).catch(err => {
-            console.log(err)
             return response.status(500).json({ msg: "Internal Server Error", status: false })
         })
 
     }).catch((err) => {
-       console.log(err);
         return response.status(500).json({ err: "Internal Server Error", status: false })
     })
 }
@@ -53,7 +46,6 @@ export const vieworderByorderId = (request, response, next) => {
         path:"orderItem",
         populate:{path:"bookId"}
     }).then((result) => {
-        console.log(result);
         return response.status(200).json({ order: result, status: true });
     }).catch((err) => {
         return response.status(500).json({ err: "Internal Server Error", status: false });
@@ -64,7 +56,6 @@ export const vieworderByorderId = (request, response, next) => {
 export const changestatus = async (request, response, next) => {
     try {
         let order = await Order.findById(request.params.orderId)
-        console.log(order);
         if (!order)
             return response.status(401).json({ message: "Order ID nor found" })
         if (order.status == "shipped")
@@ -78,7 +69,6 @@ export const changestatus = async (request, response, next) => {
         return response.status(200).json({ Order: order, status: true })
     }
     catch (err) {
-        console.log(err)
         return response.status(500).json({ error: "Internal Server Error" })
  }
 }
