@@ -7,7 +7,7 @@ import { PDF } from "../services/nodeInvoice.js";
 const upload = multer({dest:"public/images"});
 const router=express.Router();
 router.post("/signIn",signIn);
-router.post("/signup",upload.single("profile"),signup);
+router.post("/signup",signup);
 router.get("/userList",allUserList)
 router.post("/viewprofile" ,userProfile );
 router.post("/updateProfile",upload.single("profile"),updateProfile);
