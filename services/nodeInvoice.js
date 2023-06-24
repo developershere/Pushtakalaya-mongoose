@@ -4,9 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 export const PDF = async (request, response, next) => {
     try {
-        console.log("Inside PDF.....");
-        console.log(request.body.books);
-        console.log(request.body.user);
+
         const userDetails = request.body.user;
         const books = request.body.books;
         const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -39,9 +37,8 @@ export const PDF = async (request, response, next) => {
             path: './Invoices/creator.pdf',
             type: ""
         }
-        pdf.create(document, options).then((res) => console.log(res)).catch(err => console.log(err));
+        pdf.create(document, options).then().catch();
 
     } catch (err) {
-        console.log(err);
     }
 }

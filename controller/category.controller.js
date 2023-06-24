@@ -29,7 +29,6 @@ export const removeCategory = async (request, response, next) => {
         .then(result => {
             return response.status(200).json({ message: "Category removed", status: true ,result});
         }).catch(err => {
-            console.log(err);
             return response.status(500).json({ error: "Internal Server Error", status: false });
       })
 }
@@ -47,7 +46,6 @@ export const editCategory = async (request, response, next) => {
        return response.status(200).json({result:category,message : "Category update succesfully"})
         } 
     } catch (err) {
-        console.log(err);
         return response.status(500).json({ err: "Internal Server Error", status: false });
     }
 }
@@ -61,7 +59,6 @@ export const addMoreCategory =(request,response,next)=>{
     Category.create({categoryName : request.body.categoryName}).then(result=>{
         return response.status(200).json({category:result,msg:"Category Added SuccesFully",status:true});
     }).catch(err=>{
-        console.log(err);
         return response.status(500).json({msg:"Internal Server Error",status:false});
     })
 }

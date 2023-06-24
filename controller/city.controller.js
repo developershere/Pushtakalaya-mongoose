@@ -4,7 +4,6 @@ export const addCity = (request, response, next) => {
   City.create({ stateId: request.body.id, name: request.body.name }).then(result => {
    return response.status(200).json({ msg: "City Added SuccesFully", status: true });
   }).catch(err => {
-    console.log(err);
     return response.status(500).json({ msg: "Internal Server Error", status: false });
   })
 }
@@ -17,7 +16,6 @@ export const cityList = (request, response, next) => {
 }
 export const findCityByState = async (request, response, next) => {
   try {
-    console.log("CIties called...")
     const cities = await City.find({ stateId: request.body.stateId });
     return response.status(200).json({ city: cities, status: true });
   } catch (err) {
@@ -76,7 +74,6 @@ export const addCitys = async (request, response, next) => {
     return response.status(200).json({ msg: "Add city Succesfully", status: true });
 
   } catch (err) {
-    console.log(err);
     return response.status(500).json({ msg: "Internal Server Error", status: false });
   }
 }

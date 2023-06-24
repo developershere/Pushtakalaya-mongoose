@@ -9,7 +9,6 @@ export const signUp=async(request,response,next)=>{
    let admin = await Admin.create(request.body);
    return  response.status(200).json({result:admin,msg:"SignUp success",status:true })
     }catch(err){
-        console.log(err);
         return response.status(500).json({err:"Internal Server Error",status:false});
     }
 }
@@ -26,7 +25,6 @@ export const signIn =async(request,response,next)=>{
     return response.status(401).json({err:"Unauthorized Person",status:false});  
 
     }catch(err){
-        console.log(err);
         return response.status(500).json({err:"Internal Server Error",status:false});
     }
 }
