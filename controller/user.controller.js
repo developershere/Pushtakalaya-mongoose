@@ -38,7 +38,7 @@ export const signIn = async (request, response, next) => {
     try {
         let user = await User.findOne({ email: request.body.email });
         let status = user?.email ? await bcrypt.compare(request.body.password, user.password) : false;
-        if (true) {
+        if (status) {
             let token = jwt.sign({ email: user.email,password:user.password,name:user.name}, process.env.KEY_SECRET);
             return response.status(200).json({ user: { ...user.toObject(), password: null }, msg: "SignIn Success", status: true, token: token });
         }
