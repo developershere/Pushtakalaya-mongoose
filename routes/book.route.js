@@ -5,7 +5,7 @@ import multer from "multer";
 import { verifyToken } from "../verification/tokenVerification.js";
 const router=express.Router(); 
 const upload = multer({dest:"public/images"});
-router.post("/add",verifyToken,body("name","Book Name Required").notEmpty(),
+router.post("/add",body("name","Book Name Required").notEmpty(),
 body("author").notEmpty(),
 body("language").notEmpty(),
 body("price").notEmpty(),
@@ -20,7 +20,7 @@ body("permission").notEmpty(),
 body("categoryId").notEmpty(),
 body("publicationDate").notEmpty(),
 upload.single("photos"),addBook);
-router.post('/saveAll',verifyToken,saveProduct);
+router.post('/saveAll',saveProduct);
 router.get("/topBooks",TopBooks);
 router.get("/list",bookList);
 router.get("/totalbook",TotalBook)
@@ -29,11 +29,11 @@ router.put('/removeBook/book/:id',removeBook);
 router.post('/searchbyAuthor',searchByAuther);
 router.post('/searchByCategoryId',searchByCategoryId)
 router.get("/searchByBookName/:name",searchByBookName);
-router.post("/byuserId",verifyToken,viewByUserId);
+router.post("/byuserId",viewByUserId);
 router.post("/searchByKeyWord", searchByKeyWord)
-router.post("/update-book",verifyToken,upload.single("profile"),updateBook);
+router.post("/update-book",upload.single("profile"),updateBook);
 router.get("/totalpendingbook",TotalPendingBook)
-router.post("/serachByuserId",verifyToken,searchByuserId)
+router.post("/serachByuserId",searchByuserId)
 router.post("/price",price)
 router.get("/donetors" ,  donetors)
 router.put('/change/permissionAllowed/:id',permissionAllowed)

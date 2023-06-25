@@ -10,8 +10,8 @@ const router=express.Router();
 router.post("/signIn",signIn);
 router.post("/signup",signup);
 router.get("/userList",allUserList)
-router.post("/viewprofile",verifyToken,userProfile );
-router.post("/updateProfile",verifyToken,upload.single("profile"),updateProfile);
+router.post("/viewprofile",userProfile );
+router.post("/updateProfile",upload.single("profile"),updateProfile);
 router.post("/verifyEmail",verifyEmail);
 router.post('/forgot-password',forgotPassword);
 router.post('/forgettpassword', updatePassword);
